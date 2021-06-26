@@ -17,12 +17,16 @@ let IndexRouter = class IndexRouter {
     authRouter;
     postRouter;
     profileRouter;
+    commentRouter;
+    likeRouter;
     router;
-    constructor(userRouter, authRouter, postRouter, profileRouter) {
+    constructor(userRouter, authRouter, postRouter, profileRouter, commentRouter, likeRouter) {
         this.userRouter = userRouter;
         this.authRouter = authRouter;
         this.postRouter = postRouter;
         this.profileRouter = profileRouter;
+        this.commentRouter = commentRouter;
+        this.likeRouter = likeRouter;
         this.router = express_1.Router();
         this.routes();
     }
@@ -31,6 +35,8 @@ let IndexRouter = class IndexRouter {
         this.router.use("/api/v1/auth", this.authRouter.router);
         this.router.use("/api/v1/posts", this.postRouter.router);
         this.router.use("/api/v1/profiles", this.profileRouter.router);
+        this.router.use("/api/v1/comments", this.commentRouter.router);
+        this.router.use("/api/v1/likes", this.likeRouter.router);
         return this;
     }
 };
@@ -39,6 +45,8 @@ IndexRouter = __decorate([
     __param(0, inversify_1.inject(types_1.TYPES.UserRouter)),
     __param(1, inversify_1.inject(types_1.TYPES.AuthRouter)),
     __param(2, inversify_1.inject(types_1.TYPES.PostRouter)),
-    __param(3, inversify_1.inject(types_1.TYPES.ProfileRouter))
+    __param(3, inversify_1.inject(types_1.TYPES.ProfileRouter)),
+    __param(4, inversify_1.inject(types_1.TYPES.CommentRouter)),
+    __param(5, inversify_1.inject(types_1.TYPES.LikeRouter))
 ], IndexRouter);
 exports.default = IndexRouter;
