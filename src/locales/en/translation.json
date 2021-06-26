@@ -1,0 +1,38 @@
+{
+    "vehicle__brand__name__required":"Vehicle brand's name cannot be blank",
+    "vehicle_type_uuid__required":"Please choose one of vehicle type of vehicle below",
+
+    "vehicle__sub_type__name__required":"Vehicle sub-type's name cannot be blank",
+    "vehicle_sub_type_uuid__required":"Please choose one og vehicle sub-type of vehicle below",
+    "vehicle__type__name__required":"Vehicle type's name cannot be blank",
+
+    "vehicle__model__name__required":"Vehicle model's name cannot be blank",
+    "vehicle__model__name__must_be_string":"Vehicle model's name must only contains letters",
+    "vehicle__model__type_uuid__required":"Please choose one of vehicle model below",
+    "vehicle__model__sub_type_uuid__required":"Vehicle model's sub-type cannot be blank",
+    "vehicle__model__brand_uuid__required":"Please choose one of vehicle brand below",
+    "vehicle__model__year__must_a_number":"Vehicle models' year must only contains number",
+    "vehicle__model__year__is_only_four_digit":"Please input only four digits of year",
+    "vehicle__model__year__must_greater_than_zero":"Year must be greater than zero",
+    "vehicle__model__cargo_size_length__required":"Length of cargo size cannot be blank",
+    "vehicle__model__cargo_size_length__must_a_number":"Length of cargo size must only contains number",
+    "vehicle__model__cargo_size_width__required":"Width of cargo size cannot be blank",
+    "vehicle__model__cargo_size_width__must_a_number":"Width of cargo size must only contains number",
+    "vehicle__model__cargo_size_height__required":"Height of cargo size cannot be blank",
+    "vehicle__model__cargo_size_height__must_a_number":"Height of cargo size must only contains number",
+    "vehicle__model__cargo_size_dimension__required":"Dimension of cargo size cannot be blank",
+    "vehicle__model__cargo_size_dimension__must_a_number":"Dimension of cargo size must only contains number",
+    "vehicle__model__maximum_weight__required":"Maximum weight cannot be blank",
+    "vehicle__model__cargo_size_length__must_greater_than_zero":"Length of cargo size value must greater than zero",
+    "vehicle__model__cargo_size_width__must_greater_than_zero":"Width of cargo size value must greater than zero",
+    "vehicle__model__cargo_size_height__must_greater_than_zero":"Height of cargo size value must greater than zero",
+    "vehicle__model__cargo_size_dimension__must_greater_than_zero":"Dimension of cargo size value must greater than zero",
+    "vehicle__model__maximum_weight__must_greater_than_zero":"Maximum weight of cargo size value must greater than zero",
+    "vehicle__model__photos__front__must_be_string":"Vehicle front photo must only contains letter",
+    "vehicle__model__photos__front__must_be_url":"Please input a proper front photo of vehicle",
+    "vehicle__model__photos__side__must_be_string":"Vehicle side photo must only contains letter",
+    "vehicle__model__photos__back__must_be_string":"Vehicle back photo must only contains letter",
+    "vehicle__model__photos__side__must_be_url":"Please input a proper side photo of vehicle",
+    "vehicle__model__photos__back__must_be_url":"Please input a proper back photo of vehicle"
+
+}
