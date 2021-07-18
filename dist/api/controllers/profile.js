@@ -16,6 +16,8 @@ const httpResponse_1 = __importDefault(require("../../helpers/httpResponse"));
 const inversify_1 = require("inversify");
 const types_1 = require("../../types");
 const getProfileRequest_1 = __importDefault(require("../../request/profile/getProfileRequest"));
+const errors_1 = require("../../helpers/errors");
+const updateProfileRequest_1 = __importDefault(require("../../request/profile/updateProfileRequest"));
 let ProfileCotnroller = class ProfileCotnroller {
     profileService;
     constructor(profileService) {
@@ -39,13 +41,34 @@ let ProfileCotnroller = class ProfileCotnroller {
             obj.totalData = result.total || 0;
             obj.currentPage = pageVal;
             obj.limit = limitVal;
-            // res.setHeader("X-Pagination-Total-Page", Math.ceil(result.total / +limitVal));
-            // res.setHeader("X-Pagination-Total-Data", result.total || 0);
-            // res.setHeader("X-Pagination-Current-Page", pageVal);
-            // res.setHeader("X-Pagination-Limit", limitVal);
             obj.data = result.data.map((data) => data.toListData());
             return httpResponse_1.default.success(req, res, obj);
         });
+    }
+    profile(req, res) {
+        const user = req.user;
+        return this.profileService.findOne(user.uuid)
+            .then((result) => {
+            return httpResponse_1.default.success(req, res, result?.toDetailData());
+        })
+            .catch((err) => errors_1.HttpErrorHandler(err, req, res));
+    }
+    findOneBySlug(req, res) {
+        const { params: { slug } } = req;
+        return this.profileService.findOneBySlug(slug)
+            .then((result) => {
+            return httpResponse_1.default.success(req, res, result);
+        })
+            .catch((err) => errors_1.HttpErrorHandler(err, req, res));
+    }
+    update(req, res) {
+        const user = req.user;
+        const bodyData = new updateProfileRequest_1.default(req.body);
+        return this.profileService.update(bodyData, user)
+            .then((result) => {
+            return httpResponse_1.default.success(req, res, result);
+        })
+            .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
 };
 ProfileCotnroller = __decorate([

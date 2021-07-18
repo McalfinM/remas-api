@@ -50,9 +50,10 @@ let PostRepository = class PostRepository {
         });
         return data;
     }
-    async findDetailPost(slug) {
+    async findPostByUuid(uuid, user) {
         const result = await post_2.default.findOne({
-            slug: slug,
+            uuid: uuid,
+            "created_by.uuid": user.uuid,
             $or: [{ deleted_at: undefined }]
         });
         return result ? new post_1.default(result) : null;
@@ -62,6 +63,43 @@ let PostRepository = class PostRepository {
             uuid: uuid,
             "created_by.uuid": user.uuid
         }, { deleted_at: new Date });
+        return { success: true };
+    }
+    async findPostWithAuth(user) {
+        return await post_2.default.find({ "created_by.uuid": user.uuid, deleted_at: null })
+            .then(result => {
+            return {
+                data: result.map((data) => {
+                    return new post_1.default({
+                        uuid: data.uuid,
+                        created_by: data.created_by,
+                        slug: data.slug,
+                        category: {
+                            uuid: data.category?.uuid ?? '',
+                            name: data.category?.name ?? ''
+                        },
+                        image: data.image,
+                        title: data.title,
+                        cloudinary_id: data.cloudinary_id,
+                        // comments: data.comments,
+                        content: data.content,
+                        created_at: data.created_at,
+                        deleted_at: data.deleted_at,
+                        updated_at: data.updated_at
+                    });
+                })
+            };
+        });
+    }
+    async chainUpdateFromProfile(data) {
+        const response = await post_2.default.updateMany({ "created_by.uuid": data.user_uuid }, {
+            created_by: {
+                uuid: data.user_uuid ?? '',
+                name: data.main_information?.nickname ?? '',
+                image: data.main_information?.image,
+                slug: data.slug
+            }
+        });
         return { success: true };
     }
     async index(specification) {
@@ -82,7 +120,10 @@ let PostRepository = class PostRepository {
                         uuid: data.uuid,
                         created_by: data.created_by,
                         slug: data.slug,
-                        category: data.category,
+                        category: {
+                            uuid: data.category?.uuid ?? '',
+                            name: data.category?.name ?? ''
+                        },
                         image: data.image,
                         title: data.title,
                         cloudinary_id: data.cloudinary_id,

@@ -10,6 +10,7 @@ class PostEntity extends baseEntity_1.default {
     _content;
     _category;
     _created_by;
+    _event;
     _image;
     _slug;
     _cloudinary_id;
@@ -23,6 +24,7 @@ class PostEntity extends baseEntity_1.default {
         this._content = params.content;
         this._category = params.category;
         this._created_by = params.created_by;
+        this._event = params.event;
         this._image = params.image;
         this._slug = params.slug;
         this._cloudinary_id = params.cloudinary_id;
@@ -72,6 +74,12 @@ class PostEntity extends baseEntity_1.default {
     set slug(slug) {
         this._slug = slug;
     }
+    get event() {
+        return this._event;
+    }
+    set event(event) {
+        this._event = event;
+    }
     get cloudinary_id() {
         return this._cloudinary_id;
     }
@@ -102,13 +110,9 @@ class PostEntity extends baseEntity_1.default {
             title: this.title,
             content: this.content,
             category: this.category,
-            created_by: this.created_by,
             image: this.image,
             slug: this.slug,
             cloudinary_id: this.cloudinary_id,
-            created_at: this.created_at,
-            updated_at: this.updated_at,
-            deleted_at: this.deleted_at,
         };
     }
     toListData() {
@@ -117,9 +121,20 @@ class PostEntity extends baseEntity_1.default {
             category: this.category,
             image: this.image,
             slug: this.slug,
+            created_by: this.created_by,
             created_at: this.created_at,
             updated_at: this.updated_at,
-            deleted_at: this.deleted_at,
+        };
+    }
+    toListWithAuth() {
+        return {
+            uuid: this.uuid,
+            title: this.title,
+            category: this.category,
+            image: this.image,
+            slug: this.slug,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
         };
     }
     toDetailData() {

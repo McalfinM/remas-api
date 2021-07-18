@@ -12,6 +12,7 @@ import { IUser } from "../models/interfaces/user";
 import CreateCommentRequest from "../request/comment/createCommentRequest";
 import { ICommentRepository } from "../repositories/interfaces/comment";
 import { ErrorNotFound } from "../helpers/errors";
+import ProfileEntity from "../entities/profile";
 
 @injectable()
 class CommentService implements ICommentService {
@@ -22,10 +23,15 @@ class CommentService implements ICommentService {
     ) { }
 
     async create(data: CreateCommentRequest, user: IUser): Promise<{ success: true }> {
+        console.log(data)
         const commentEntity = new CommentEntity({
             uuid: uuidv4(),
-            user_uuid: user.uuid,
+            created_by: {
+                uuid: user.uuid,
+                name: user.name
+            },
             post_uuid: data.post_uuid,
+            ip_address: data.ip_address,
             comment: data.comment,
             created_at: new Date,
             deleted_at: null,
@@ -41,12 +47,15 @@ class CommentService implements ICommentService {
         return result
     }
 
-    async update(uuid: string, data: CreateCommentRequest): Promise<{ success: true }> {
+    async update(uuid: string, data: CreateCommentRequest, user: IUser): Promise<{ success: true }> {
         const findComment = await this.commentRepository.findOne(uuid)
         if (!findComment) throw new ErrorNotFound('Comment not found', '@Comment service update')
         const commentEntity = new CommentEntity({
             uuid: findComment.uuid,
-            user_uuid: findComment.user_uuid,
+            created_by: {
+                uuid: user.uuid,
+                name: user.name
+            },
             post_uuid: findComment.post_uuid,
             comment: data.comment,
             created_at: findComment.created_at,
@@ -67,6 +76,11 @@ class CommentService implements ICommentService {
         const data = new Date
         const post = await this.commentRepository.delete(uuid, user.uuid, data)
 
+        return { success: true }
+    }
+
+    async chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }> {
+        const comment = await this.commentRepository.chainUpdateFromProfile(data)
         return { success: true }
     }
 

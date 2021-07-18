@@ -6,18 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const baseEntity_1 = __importDefault(require("./baseEntity"));
 class CommentEntity extends baseEntity_1.default {
     _uuid;
-    _user_uuid;
+    _created_by;
     _comment;
     _post_uuid;
+    _ip_address;
     _created_at;
     _updated_at;
     _deleted_at;
     constructor(params) {
         super();
         this._uuid = params.uuid;
-        this._user_uuid = params.user_uuid;
+        this._created_by = params.created_by;
         this._comment = params.comment;
         this._post_uuid = params.post_uuid;
+        this._ip_address = params.ip_address;
         this._created_at = params.created_at;
         this._deleted_at = params.deleted_at;
         this._updated_at = params.updated_at;
@@ -28,17 +30,23 @@ class CommentEntity extends baseEntity_1.default {
     set uuid(uuid) {
         this._uuid = uuid;
     }
-    get user_uuid() {
-        return this._user_uuid;
+    get created_by() {
+        return this._created_by;
     }
-    set user_uuid(user_uuid) {
-        this._user_uuid = user_uuid;
+    set created_by(created_by) {
+        this._created_by = created_by;
     }
     get comment() {
         return this._comment;
     }
     set comment(comment) {
         this._comment = comment;
+    }
+    get ip_address() {
+        return this._ip_address;
+    }
+    set ip_address(ip_address) {
+        this._ip_address = ip_address;
     }
     get post_uuid() {
         return this._post_uuid;
@@ -67,7 +75,7 @@ class CommentEntity extends baseEntity_1.default {
     toJson() {
         return {
             uuid: this._uuid,
-            user_uuid: this._user_uuid,
+            created_by: this._created_by,
             comment: this._comment,
             post_uuid: this._post_uuid,
             created_at: this._created_at,
@@ -78,22 +86,17 @@ class CommentEntity extends baseEntity_1.default {
     toListData() {
         return {
             uuid: this._uuid,
-            user_uuid: this._user_uuid,
+            created_by: this._created_by,
             comment: this._comment,
-            post_uuid: this._post_uuid,
             created_at: this._created_at,
-            deleted_at: this._deleted_at,
             updated_at: this._updated_at,
         };
     }
     toDetailData() {
         return {
-            uuid: this._uuid,
-            user_uuid: this._user_uuid,
+            created_by: this._created_by,
             comment: this._comment,
-            post_uuid: this._post_uuid,
             created_at: this._created_at,
-            deleted_at: this._deleted_at,
             updated_at: this._updated_at,
         };
     }

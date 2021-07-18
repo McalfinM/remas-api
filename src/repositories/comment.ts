@@ -5,6 +5,7 @@ import { IProfileRepository } from "./interfaces/profile";
 import { ICommentRepository } from "./interfaces/comment";
 import CommentEntity from "../entities/comment";
 import CommentModel from "../models/comment";
+import ProfileEntity from "../entities/profile";
 
 @injectable()
 class CommentRepository implements ICommentRepository {
@@ -12,9 +13,10 @@ class CommentRepository implements ICommentRepository {
 
         const result = await CommentModel.create({
             uuid: data.uuid,
-            user_uuid: data.user_uuid,
+            created_by: data.created_by,
             comment: data.comment,
             post_uuid: data.post_uuid,
+            ip_address: data.ip_address,
             created_at: data.created_at,
             deleted_at: data.deleted_at,
             updated_at: data.updated_at,
@@ -48,7 +50,18 @@ class CommentRepository implements ICommentRepository {
         })
         return { success: true }
     }
+    async chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }> {
+        await CommentModel.updateMany({ "created_by.uuid": data.user_uuid }, {
+            created_by: {
+                name: data.main_information?.nickname ?? '',
+                uuid: data.user_uuid ?? "",
+                image: data.main_information?.image,
+                slug: data.slug
+            }
+        })
 
+        return { success: true }
+    }
     async find(post_uuid: string): Promise<{ data: CommentEntity[] }> {
 
         return CommentModel.find({ post_uuid: post_uuid })
@@ -57,12 +70,10 @@ class CommentRepository implements ICommentRepository {
                     data: result.map(data => {
                         return new CommentEntity({
                             uuid: data.uuid,
-                            user_uuid: data.user_uuid,
-                            post_uuid: data.post_uuid,
+                            created_by: data.created_by,
                             comment: data.comment,
                             created_at: data.created_at,
                             updated_at: data.updated_at,
-                            deleted_at: data.updated_at
                         })
                     })
                 }

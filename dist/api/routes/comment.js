@@ -13,9 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const baseRouter_1 = __importDefault(require("./baseRouter"));
+const comment_1 = require("../validators/comment/comment");
 const express_1 = require("express");
 const inversify_1 = require("inversify");
 const types_1 = require("../../types");
+const auth_1 = require("../../middlewares/auth");
+const requestBodyValidation_1 = require("../../middlewares/requestBodyValidation");
 let CommentRouter = class CommentRouter extends baseRouter_1.default {
     commentController;
     router;
@@ -28,10 +31,10 @@ let CommentRouter = class CommentRouter extends baseRouter_1.default {
     }
     routes() {
         // call controllers here
-        this.router.post('/', this.commentController.create);
-        this.router.put('/:uuid', this.commentController.update);
-        this.router.delete('/:uuid', this.commentController.delete);
-        this.router.get('/:uuid', this.commentController.findOne);
+        this.router.post('/', auth_1.authenticate, comment_1.bodyValidation(), requestBodyValidation_1.validate, this.commentController.create);
+        this.router.put('/:uuid', auth_1.authenticate, this.commentController.update);
+        this.router.delete('/:uuid', auth_1.authenticate, this.commentController.delete);
+        this.router.get('/:uuid', auth_1.authenticate, this.commentController.findOne);
         return this;
     }
 };

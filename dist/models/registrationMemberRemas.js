@@ -9,11 +9,15 @@ const RegistrationSchema = new mongoose_1.Schema({
     address: { type: String },
     handphone: { type: String },
     user_uuid: { type: String },
+    image: { type: String },
+    ipaddr: { type: String },
+    description: { type: String },
+    created_by: { type: Object },
     created_at: { type: Date },
     updated_at: { type: Date },
     deleted_at: { type: Date },
 });
 RegistrationSchema.index('full_name');
 RegistrationSchema.index('uuid');
-const RegistrationModel = mongoose_1.model("registrations", RegistrationSchema);
-exports.default = RegistrationModel;
+const RegistrationMemberRemasModel = mongoose_1.model("registrations_member_remas", RegistrationSchema);
+exports.default = RegistrationMemberRemasModel;

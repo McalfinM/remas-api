@@ -7,8 +7,10 @@ const ProfileSchema: Schema = new Schema(
         user_uuid: { type: String },
         main_information: { type: Object },
         ramadhan: { type: Object },
+        slug: { type: String },
         idul_adha: { type: Object },
-        roles: { type: Array }
+        roles: { type: Array },
+        deleted_at: { type: Date }
     }
 );
 

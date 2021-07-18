@@ -32,9 +32,35 @@ class ProfileRepository implements IProfileRepository {
         return result ? new ProfileEntity(result) : null
     }
 
-    async update(data: ProfileEntity): Promise<ProfileEntity> {
+    async findOneBySlug(slug: string): Promise<ProfileEntity | null> {
 
-        const result = await ProfileModel.updateOne()
+        const result = await ProfileModel.findOne({
+            slug: slug,
+
+        })
+
+        return result ? new ProfileEntity(result) : null
+    }
+
+    async update(data: ProfileEntity): Promise<ProfileEntity> {
+        const result = await ProfileModel.updateOne({
+            uuid: data.uuid, user_uuid: data.user_uuid,
+        }, {
+            idul_adha: data.idul_adha ?? null,
+            main_information: {
+                nickname: data.main_information?.nickname,
+                full_name: data.main_information?.full_name,
+                visi: data.main_information?.visi,
+                misi: data.main_information?.misi,
+                image: data.main_information?.image,
+                description: data.main_information?.description,
+                cloudinary_id: data.main_information?.cloudinary_id
+            },
+            ramadhan: data.ramadhan ?? null,
+            slug: data.slug,
+            user_uuid: data.user_uuid,
+
+        })
         return data
     }
 
@@ -67,7 +93,8 @@ class ProfileRepository implements IProfileRepository {
                             user_uuid: '',
                             uuid: '',
                             slug: data.slug,
-                            main_information: data.main_information
+                            main_information: data.main_information,
+                            deleted_at: null
                         });
                     }),
                 };

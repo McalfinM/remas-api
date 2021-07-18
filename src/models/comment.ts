@@ -4,9 +4,10 @@ import { IComment } from "./interfaces/comment";
 const CommentSchema: Schema = new Schema(
     {
         uuid: { type: String },
-        user_uuid: { type: String },
+        created_by: { type: Object },
         comment: { type: String },
         post_uuid: { type: String },
+        ip_address: { type: String },
         created_at: { type: Date },
         deleted_at: { type: Date },
         updated_at: { type: Date }

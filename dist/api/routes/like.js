@@ -16,6 +16,7 @@ const baseRouter_1 = __importDefault(require("./baseRouter"));
 const express_1 = require("express");
 const inversify_1 = require("inversify");
 const types_1 = require("../../types");
+const auth_1 = require("../../middlewares/auth");
 let LikeRouter = class LikeRouter extends baseRouter_1.default {
     likeController;
     router;
@@ -28,7 +29,7 @@ let LikeRouter = class LikeRouter extends baseRouter_1.default {
     }
     routes() {
         // call controllers here
-        this.router.post('/', this.likeController.create);
+        this.router.post('/', auth_1.authenticate, this.likeController.create);
         this.router.delete('/:uuid', this.likeController.delete);
         this.router.get('/:uuid', this.likeController.findOne);
         return this;

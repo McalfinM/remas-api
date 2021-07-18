@@ -13,9 +13,11 @@ class Authentication {
         let result = await bcrypt_1.default.compare(text, encrypt);
         return result;
     };
-    static generateToken = async (name, email, uuid) => {
+    static generateToken = async (name, roles, uuid) => {
         const secretKey = process.env.JWT_SECRET || 'secret';
-        const token = jsonwebtoken_1.default.sign({ name, email, uuid }, secretKey);
+        const token = jsonwebtoken_1.default.sign({ name, roles, uuid }, secretKey, {
+            expiresIn: '24h'
+        });
         return token;
     };
 }

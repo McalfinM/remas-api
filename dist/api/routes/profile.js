@@ -16,6 +16,7 @@ const baseRouter_1 = __importDefault(require("./baseRouter"));
 const express_1 = require("express");
 const inversify_1 = require("inversify");
 const types_1 = require("../../types");
+const auth_1 = require("../../middlewares/auth");
 let ProfileRouter = class ProfileRouter extends baseRouter_1.default {
     profileController;
     router;
@@ -29,6 +30,9 @@ let ProfileRouter = class ProfileRouter extends baseRouter_1.default {
     routes() {
         // call controllers here
         this.router.get('/', this.profileController.index);
+        this.router.patch('/', auth_1.authenticate, this.profileController.update);
+        this.router.get('/my-profile', auth_1.authenticate, this.profileController.profile);
+        this.router.get('/:slug', this.profileController.findOneBySlug);
         return this;
     }
 };

@@ -15,7 +15,7 @@ import UpdatePostRequest from "../../request/post/updatePostRequest";
 import { ICommentController } from "./interfaces/comment";
 import CreateCommentRequest from "../../request/comment/createCommentRequest";
 import { ICommentService } from "../../services/interfaces/comment";
-
+import { ipaddr } from "../../helpers/ip";
 @injectable()
 class CommentController implements ICommentController {
 
@@ -24,14 +24,15 @@ class CommentController implements ICommentController {
     ) { }
 
 
-    create(req: Request, res: Response): Promise<Response> {
+    async create(req: Request, res: Response): Promise<Response> {
 
-        const postData = new CreateCommentRequest(
-            req.body
+        const commentData = new CreateCommentRequest({
+            ...req.body,
+            ip_address: ipaddr
+        }
         );
         const user = req.user
-
-        return this.commentService.create(postData, user)
+        return this.commentService.create(commentData, user)
             .then((result) => {
                 return HttpResponse.created(req, res, result);
             })

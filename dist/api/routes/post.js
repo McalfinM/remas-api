@@ -32,8 +32,10 @@ let PostRouter = class PostRouter extends baseRouter_1.default {
     routes() {
         // call controllers here
         this.router.get('/', this.postController.index);
+        this.router.get('/my-post', auth_1.authenticate, this.postController.findWithAuth);
         this.router.post('/', auth_1.authenticate, post_1.bodyValidation(), requestValidation_1.validate, this.postController.create);
         this.router.put('/:uuid', auth_1.authenticate, post_1.updatePost(), requestValidation_1.validate, this.postController.update);
+        this.router.get('/my-post/:uuid', auth_1.authenticate, this.postController.findOneByUuid);
         this.router.get('/:uuid', this.postController.findOne);
         this.router.delete('/:uuid', auth_1.authenticate, this.postController.delete);
         return this;

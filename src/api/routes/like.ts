@@ -5,6 +5,7 @@ import IRouter from './interfaces/router'
 import { decorate, inject, injectable } from 'inversify'
 import { TYPES } from '../../types'
 import { ILikeController } from '../controllers/interfaces/like'
+import { authenticate } from '../../middlewares/auth'
 
 @injectable()
 class LikeRouter extends BaseRouter {
@@ -22,7 +23,7 @@ class LikeRouter extends BaseRouter {
 
     routes(): IRouter {
         // call controllers here
-        this.router.post('/', this.likeController.create)
+        this.router.post('/', authenticate, this.likeController.create)
         this.router.delete('/:uuid', this.likeController.delete)
         this.router.get('/:uuid', this.likeController.findOne)
         return this

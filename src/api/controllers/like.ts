@@ -9,7 +9,7 @@ import CreateCommentRequest from "../../request/comment/createCommentRequest";
 import { ICommentService } from "../../services/interfaces/comment";
 import { ILikeService } from "../../services/interfaces/like";
 import CreateLikeRequest from "../../request/like/createLikeRequest";
-
+import publicIp from 'public-ip'
 @injectable()
 class LikeController implements ILikeController {
 
@@ -19,13 +19,11 @@ class LikeController implements ILikeController {
 
 
     create(req: Request, res: Response): Promise<Response> {
-
-        const postData = new CreateLikeRequest(
+        const like = new CreateLikeRequest(
             req.body
         );
         const user = req.user
-
-        return this.likeService.create(postData, user)
+        return this.likeService.create(like, user)
             .then((result) => {
                 return HttpResponse.created(req, res, result);
             })
@@ -34,8 +32,8 @@ class LikeController implements ILikeController {
 
     findOne(req: Request, res: Response): Response | Promise<Response> {
 
-        const { params: { uuid } } = req
-        return this.likeService.findOne(uuid)
+        const { body: { post_uuid, user_uuid } } = req
+        return this.likeService.findOne(post_uuid, user_uuid)
             .then((result) => {
                 return HttpResponse.success(req, res, result);
             })

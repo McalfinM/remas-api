@@ -25,10 +25,15 @@ let CommentService = class CommentService {
         this.dispatcher = dispatcher;
     }
     async create(data, user) {
+        console.log(data);
         const commentEntity = new comment_1.default({
             uuid: uuid_1.v4(),
-            user_uuid: user.uuid,
+            created_by: {
+                uuid: user.uuid,
+                name: user.name
+            },
             post_uuid: data.post_uuid,
+            ip_address: data.ip_address,
             comment: data.comment,
             created_at: new Date,
             deleted_at: null,
@@ -41,13 +46,16 @@ let CommentService = class CommentService {
         const result = await this.commentRepository.findOne(uuid);
         return result;
     }
-    async update(uuid, data) {
+    async update(uuid, data, user) {
         const findComment = await this.commentRepository.findOne(uuid);
         if (!findComment)
             throw new errors_1.ErrorNotFound('Comment not found', '@Comment service update');
         const commentEntity = new comment_1.default({
             uuid: findComment.uuid,
-            user_uuid: findComment.user_uuid,
+            created_by: {
+                uuid: user.uuid,
+                name: user.name
+            },
             post_uuid: findComment.post_uuid,
             comment: data.comment,
             created_at: findComment.created_at,
@@ -64,6 +72,10 @@ let CommentService = class CommentService {
     async delete(uuid, user) {
         const data = new Date;
         const post = await this.commentRepository.delete(uuid, user.uuid, data);
+        return { success: true };
+    }
+    async chainUpdateFromProfile(data) {
+        const comment = await this.commentRepository.chainUpdateFromProfile(data);
         return { success: true };
     }
 };

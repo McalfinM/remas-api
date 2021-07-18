@@ -5,7 +5,7 @@ const PostSchema = new mongoose_1.Schema({
     uuid: { type: String },
     title: { type: String },
     content: { type: String },
-    category: { type: String },
+    category: { type: Object },
     created_by: { type: Object },
     image: { type: String },
     slug: { type: String },

@@ -12,9 +12,11 @@ class Authentication {
         return result
     }
 
-    public static generateToken = async (name: string, email: string, uuid: string): Promise<string> => {
+    public static generateToken = async (name: string, roles: string[], uuid: string): Promise<string> => {
         const secretKey: string = process.env.JWT_SECRET || 'secret'
-        const token: string = jwt.sign({ name, email, uuid }, secretKey)
+        const token: string = jwt.sign({ name, roles, uuid }, secretKey, {
+            expiresIn: '24h'
+        })
 
         return token
     }

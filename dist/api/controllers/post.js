@@ -25,9 +25,8 @@ let PostController = class PostController {
         this.postService = postService;
     }
     create(req, res) {
-        const postData = new createPostrequest_1.default(req.body);
         const user = req.user;
-        return this.postService.create(postData, user)
+        return this.postService.create(new createPostrequest_1.default(req.body), user)
             .then((result) => {
             return httpResponse_1.default.created(req, res, result);
         })
@@ -50,12 +49,34 @@ let PostController = class PostController {
         })
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
+    findWithAuth(req, res) {
+        const user = req.user;
+        let obj = {
+            data: [{}]
+        };
+        return this.postService.findPostWithAuth(user)
+            .then((result) => {
+            obj.data = result.data.map((data) => data.toListWithAuth());
+            return httpResponse_1.default.success(req, res, obj);
+        });
+    }
     delete(req, res) {
         const { params: { uuid } } = req;
         const user = req.user;
         return this.postService.delete(uuid, user)
             .then((result) => {
+            let obj = {};
             return httpResponse_1.default.success(req, res, result);
+        })
+            .catch((err) => errors_1.HttpErrorHandler(err, req, res));
+    }
+    findOneByUuid(req, res) {
+        const { params: { uuid } } = req;
+        const user = req.user;
+        return this.postService.findPostByUuid(uuid, user)
+            .then((result) => {
+            let obj = {};
+            return httpResponse_1.default.success(req, res, result?.toJson());
         })
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }

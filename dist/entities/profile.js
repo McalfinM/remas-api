@@ -12,6 +12,7 @@ class ProfileEntity extends baseEntity_1.default {
     _roles;
     _ramadhan;
     _idul_adha;
+    _deleted_at;
     constructor(params) {
         super();
         this._uuid = params.uuid;
@@ -21,6 +22,7 @@ class ProfileEntity extends baseEntity_1.default {
         this._ramadhan = params.ramadhan;
         this._idul_adha = params.idul_adha;
         this._roles = params.roles;
+        this._deleted_at = params.deleted_at;
     }
     get uuid() {
         return this._uuid;
@@ -64,6 +66,12 @@ class ProfileEntity extends baseEntity_1.default {
     set idul_adha(idul_adha) {
         this._idul_adha = idul_adha;
     }
+    get deleted_at() {
+        return this._deleted_at;
+    }
+    set deleted_at(deleted_at) {
+        this._deleted_at = deleted_at;
+    }
     toJson() {
         return {
             uuid: this.uuid,
@@ -86,8 +94,6 @@ class ProfileEntity extends baseEntity_1.default {
     }
     toDetailData() {
         return {
-            uuid: this.uuid,
-            user_uuid: this.user_uuid,
             slug: this.slug,
             main_information: this.main_information,
             ramadhan: this.ramadhan,

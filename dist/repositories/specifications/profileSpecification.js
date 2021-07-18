@@ -30,7 +30,7 @@ class GetProfileSpecification {
             specifications["$or"] = or_specifications;
         }
         specifications.deleted_at = null;
-        specifications.roles = ['member'];
+        specifications.roles = ['member', 'remaja_masjid'];
         return specifications;
     }
     specSort() {

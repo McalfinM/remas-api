@@ -11,7 +11,6 @@ class LikeRepository implements ILikeRepository {
         const result = await LikeModel.create({
             uuid: data.uuid,
             user_uuid: data.user_uuid,
-            ip_address: data.ip_address,
             post_uuid: data.post_uuid,
             created_at: data.created_at,
             deleted_at: data.deleted_at,
@@ -21,9 +20,10 @@ class LikeRepository implements ILikeRepository {
         return { success: true }
     }
 
-    async findOne(uuid: string): Promise<LikeEntity | null> {
+    async findOne(post_uuid: string, uuid: string): Promise<LikeEntity | null> {
 
         const result = await LikeModel.findOne({
+            post_uuid: post_uuid,
             user_uuid: uuid,
         })
 
@@ -39,68 +39,32 @@ class LikeRepository implements ILikeRepository {
         return { success: true }
     }
 
-    async find(post_uuid: string): Promise<number> {
-
-        const like = await LikeModel.find({ post_uuid: post_uuid })
-            .countDocuments()
-        return like
-        // .then(result => {
-        //     return {
-        //         data: result.map(data => {
-        //             return new LikeEntity({
-        //                 uuid: data.uuid,
-        //                 user_uuid: data.user_uuid,
-        //                 post_uuid: data.post_uuid,
-        //                 ip_address: data.ip_address,
-        //                 created_at: data.created_at,
-        //                 updated_at: data.updated_at,
-        //                 deleted_at: data.updated_at
-        //             })
-        //         })
-        //     }
-        // })
+    async updateDeleteToNullAgain(uuid: string): Promise<{ success: true }> {
+        const result = await LikeModel.updateOne({ uuid: uuid }, {
+            updated_at: new Date,
+            deleted_at: null
+        })
+        return { success: true }
     }
 
-    // async index(
-    //     specification: specificationInterface
-    // ): Promise<{
-    //     total: number;
-    //     data: CommentEntity[];
-    // }> {
-    //     const total_customer = await LikeModel.find({
-    //         ...specification.specifies(),
-    //     }).countDocuments();
-    //     return LikeModel.find(
-    //         {
-    //             ...specification.specifies(),
-    //         },
-    //         {},
-    //         {
-    //             ...specification.paginate(),
-    //             sort: specification.specSort(),
-    //         }
-    //     )
-    //         .then((result) => {
-    //             return {
-    //                 total: total_customer,
-    //                 data: result.map((data) => {
-    //                     return new CommentEntity({
-    //                         uuid: data.uuid,
-    //                         user_uuid: data.user_uuid,
-    //                         comment: data.comment,
-    //                         post_uuid: data.post_uuid,
-    //                         created_at: data.created_at,
-    //                         updated_at: data.updated_at,
-    //                         deleted_at: data.deleted_at,
-    //                     });
-    //                 }),
-    //             };
-    //         })
-    //         .catch((err) => {
-    //             return err;
-    //         });
-    // }
+    async find(post_uuid: string): Promise<{ data: LikeEntity[] }> {
 
+        return await LikeModel.find({ post_uuid: post_uuid, deleted_at: null })
+            .then((data) => {
+                return {
+                    data: data.map(result => {
+                        return new LikeEntity({
+                            user_uuid: result.user_uuid,
+                            created_at: result.created_at,
+                            deleted_at: result.deleted_at,
+                            post_uuid: result.post_uuid,
+                            updated_at: result.updated_at,
+                            uuid: result.uuid
+                        })
+                    })
+                }
+            })
+    }
 
 
 }

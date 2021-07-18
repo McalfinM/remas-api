@@ -17,7 +17,6 @@ let LikeRepository = class LikeRepository {
         const result = await like_2.default.create({
             uuid: data.uuid,
             user_uuid: data.user_uuid,
-            ip_address: data.ip_address,
             post_uuid: data.post_uuid,
             created_at: data.created_at,
             deleted_at: data.deleted_at,
@@ -25,8 +24,9 @@ let LikeRepository = class LikeRepository {
         });
         return { success: true };
     }
-    async findOne(uuid) {
+    async findOne(post_uuid, uuid) {
         const result = await like_2.default.findOne({
+            post_uuid: post_uuid,
             user_uuid: uuid,
         });
         return result ? new like_1.default(result) : null;
@@ -38,25 +38,29 @@ let LikeRepository = class LikeRepository {
         });
         return { success: true };
     }
+    async updateDeleteToNullAgain(uuid) {
+        const result = await like_2.default.updateOne({ uuid: uuid }, {
+            updated_at: new Date,
+            deleted_at: null
+        });
+        return { success: true };
+    }
     async find(post_uuid) {
-        const like = await like_2.default.find({ post_uuid: post_uuid })
-            .countDocuments();
-        return like;
-        // .then(result => {
-        //     return {
-        //         data: result.map(data => {
-        //             return new LikeEntity({
-        //                 uuid: data.uuid,
-        //                 user_uuid: data.user_uuid,
-        //                 post_uuid: data.post_uuid,
-        //                 ip_address: data.ip_address,
-        //                 created_at: data.created_at,
-        //                 updated_at: data.updated_at,
-        //                 deleted_at: data.updated_at
-        //             })
-        //         })
-        //     }
-        // })
+        return await like_2.default.find({ post_uuid: post_uuid, deleted_at: null })
+            .then((data) => {
+            return {
+                data: data.map(result => {
+                    return new like_1.default({
+                        user_uuid: result.user_uuid,
+                        created_at: result.created_at,
+                        deleted_at: result.deleted_at,
+                        post_uuid: result.post_uuid,
+                        updated_at: result.updated_at,
+                        uuid: result.uuid
+                    });
+                })
+            };
+        });
     }
 };
 LikeRepository = __decorate([

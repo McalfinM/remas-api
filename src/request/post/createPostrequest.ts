@@ -8,7 +8,7 @@ class CreatePostRequest {
     protected _created_by: IEmbed | null
     protected _image: string | null
     protected _slug: string | null
-    protected _cloudinary_id: string | null
+    protected _cloudinary_id: string
     protected _created_at: Date | null
     protected _updated_at: Date | null
     protected _deleted_at: Date | null
@@ -22,7 +22,7 @@ class CreatePostRequest {
         created_by: IEmbed | null
         image: string | null
         slug: string | null
-        cloudinary_id: string | null
+        cloudinary_id: string
         created_at: Date | null
         updated_at: Date | null
         deleted_at: Date | null
@@ -83,10 +83,10 @@ class CreatePostRequest {
     set slug(slug: string | null) {
         this._slug = slug
     }
-    get cloudinary_id(): string | null {
+    get cloudinary_id(): string {
         return this._cloudinary_id
     }
-    set cloudinary_id(cloudinary_id: string | null) {
+    set cloudinary_id(cloudinary_id: string) {
         this._cloudinary_id = cloudinary_id
     }
     get created_at(): Date | null {

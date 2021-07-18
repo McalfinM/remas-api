@@ -17,15 +17,19 @@ const inversify_1 = require("inversify");
 const types_1 = require("../../types");
 const errors_1 = require("../../helpers/errors");
 const createCommentRequest_1 = __importDefault(require("../../request/comment/createCommentRequest"));
+const ip_1 = require("../../helpers/ip");
 let CommentController = class CommentController {
     commentService;
     constructor(commentService) {
         this.commentService = commentService;
     }
-    create(req, res) {
-        const postData = new createCommentRequest_1.default(req.body);
+    async create(req, res) {
+        const commentData = new createCommentRequest_1.default({
+            ...req.body,
+            ip_address: ip_1.ipaddr
+        });
         const user = req.user;
-        return this.commentService.create(postData, user)
+        return this.commentService.create(commentData, user)
             .then((result) => {
             return httpResponse_1.default.created(req, res, result);
         })

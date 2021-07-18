@@ -9,6 +9,7 @@ import LikeEntity from '../../entities/like'
 export interface ILikeService {
     delete(uuid: string, user: IUser): Promise<{ success: true }>
     create(data: CreateLikeRequest, user: IUser): Promise<{ success: true }>
-    findOne(uuid: string): Promise<LikeEntity | null>
-    find(uuid: string): Promise<number>
+    findOne(post_uuid: string, user_uuid: string): Promise<LikeEntity | null>
+    updateDeleteToNullAgain(post_uuid: string): Promise<{ success: true }>
+    find(uuid: string): Promise<{ data: LikeEntity[] }>
 }

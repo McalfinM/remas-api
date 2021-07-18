@@ -25,8 +25,10 @@ class PostRouter extends BaseRouter {
     routes(): IRouter {
         // call controllers here
         this.router.get('/', this.postController.index)
+        this.router.get('/my-post', authenticate, this.postController.findWithAuth)
         this.router.post('/', authenticate, bodyValidation(), validate, this.postController.create)
         this.router.put('/:uuid', authenticate, updatePost(), validate, this.postController.update)
+        this.router.get('/my-post/:uuid', authenticate, this.postController.findOneByUuid)
         this.router.get('/:uuid', this.postController.findOne)
         this.router.delete('/:uuid', authenticate, this.postController.delete)
         return this

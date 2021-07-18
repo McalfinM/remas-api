@@ -10,6 +10,7 @@ class ProfileEntity extends BaseEntity {
     protected _roles?: string[]
     protected _ramadhan?: IZakat | null
     protected _idul_adha?: IIdulAdha | null
+    protected _deleted_at: Date | null
 
     constructor(params: IProfile) {
         super();
@@ -20,6 +21,7 @@ class ProfileEntity extends BaseEntity {
         this._ramadhan = params.ramadhan
         this._idul_adha = params.idul_adha
         this._roles = params.roles
+        this._deleted_at = params.deleted_at
     }
 
     get uuid(): string | undefined {
@@ -64,6 +66,13 @@ class ProfileEntity extends BaseEntity {
     set idul_adha(idul_adha: IIdulAdha | null | undefined) {
         this._idul_adha = idul_adha
     }
+    get deleted_at(): Date | null {
+        return this._deleted_at
+    }
+
+    set deleted_at(deleted_at: Date | null) {
+        this._deleted_at = deleted_at
+    }
 
     toJson(): object {
         return {
@@ -89,8 +98,6 @@ class ProfileEntity extends BaseEntity {
 
     toDetailData(): {} {
         return {
-            uuid: this.uuid,
-            user_uuid: this.user_uuid,
             slug: this.slug,
             main_information: this.main_information,
             ramadhan: this.ramadhan,

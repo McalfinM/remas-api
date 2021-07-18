@@ -1,17 +1,18 @@
 
 import BaseEntity from "./baseEntity";
-import { IEmbed, IPost } from "./interfaces/post";
+import { IEmbed, IEvent, IPost } from "./interfaces/post";
 
 
 class PostEntity extends BaseEntity {
     protected _uuid: string | null
     protected _title: string | null
     protected _content: string | null
-    protected _category: string
-    protected _created_by: IEmbed | null
+    protected _category: IEmbed
+    protected _created_by: IEmbed
+    protected _event?: IEvent | null
     protected _image: string | null
     protected _slug: string | null
-    protected _cloudinary_id: string | null
+    protected _cloudinary_id: string
     protected _created_at: Date | null
     protected _updated_at: Date | null
     protected _deleted_at: Date | null
@@ -24,6 +25,7 @@ class PostEntity extends BaseEntity {
         this._content = params.content
         this._category = params.category
         this._created_by = params.created_by
+        this._event = params.event
         this._image = params.image
         this._slug = params.slug
         this._cloudinary_id = params.cloudinary_id
@@ -50,16 +52,16 @@ class PostEntity extends BaseEntity {
     set content(content: string | null) {
         this._content = content
     }
-    get category(): string {
+    get category(): IEmbed {
         return this._category
     }
-    set category(category: string) {
+    set category(category: IEmbed) {
         this._category = category
     }
-    get created_by(): IEmbed | null {
+    get created_by(): IEmbed {
         return this._created_by
     }
-    set created_by(created_by: IEmbed | null) {
+    set created_by(created_by: IEmbed) {
         this._created_by = created_by
     }
     get image(): string | null {
@@ -74,10 +76,16 @@ class PostEntity extends BaseEntity {
     set slug(slug: string | null) {
         this._slug = slug
     }
-    get cloudinary_id(): string | null {
+    get event(): IEvent | null | undefined {
+        return this._event
+    }
+    set event(event: IEvent | null | undefined) {
+        this._event = event
+    }
+    get cloudinary_id(): string {
         return this._cloudinary_id
     }
-    set cloudinary_id(cloudinary_id: string | null) {
+    set cloudinary_id(cloudinary_id: string) {
         this._cloudinary_id = cloudinary_id
     }
     get created_at(): Date | null {
@@ -105,13 +113,9 @@ class PostEntity extends BaseEntity {
             title: this.title,
             content: this.content,
             category: this.category,
-            created_by: this.created_by,
             image: this.image,
             slug: this.slug,
             cloudinary_id: this.cloudinary_id,
-            created_at: this.created_at,
-            updated_at: this.updated_at,
-            deleted_at: this.deleted_at,
         };
     }
 
@@ -121,9 +125,21 @@ class PostEntity extends BaseEntity {
             category: this.category,
             image: this.image,
             slug: this.slug,
+            created_by: this.created_by,
             created_at: this.created_at,
             updated_at: this.updated_at,
-            deleted_at: this.deleted_at,
+        };
+    }
+
+    toListWithAuth(): {} {
+        return {
+            uuid: this.uuid,
+            title: this.title,
+            category: this.category,
+            image: this.image,
+            slug: this.slug,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
         };
     }
 

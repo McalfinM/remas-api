@@ -23,17 +23,17 @@ let LikeController = class LikeController {
         this.likeService = likeService;
     }
     create(req, res) {
-        const postData = new createLikeRequest_1.default(req.body);
+        const like = new createLikeRequest_1.default(req.body);
         const user = req.user;
-        return this.likeService.create(postData, user)
+        return this.likeService.create(like, user)
             .then((result) => {
             return httpResponse_1.default.created(req, res, result);
         })
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
     findOne(req, res) {
-        const { params: { uuid } } = req;
-        return this.likeService.findOne(uuid)
+        const { body: { post_uuid, user_uuid } } = req;
+        return this.likeService.findOne(post_uuid, user_uuid)
             .then((result) => {
             return httpResponse_1.default.success(req, res, result);
         })

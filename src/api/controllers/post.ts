@@ -22,13 +22,8 @@ class PostController implements IPostController {
 
 
     create(req: Request, res: Response): Promise<Response> {
-
-        const postData = new CreatePostRequest(
-            req.body
-        );
         const user = req.user
-
-        return this.postService.create(postData, user)
+        return this.postService.create(new CreatePostRequest(req.body), user)
             .then((result) => {
                 return HttpResponse.created(req, res, result);
             })
@@ -56,13 +51,39 @@ class PostController implements IPostController {
             .catch((err) => HttpErrorHandler(err, req, res));
     }
 
+    findWithAuth(req: Request, res: Response): Response | Promise<Response> {
+        const user = req.user
+        let obj = {
+            data: [{}]
+        }
+        return this.postService.findPostWithAuth(user)
+            .then((result) => {
+                obj.data = result.data.map((data) => data.toListWithAuth());
+
+                return HttpResponse.success(req, res, obj);
+            })
+
+    }
+
     delete(req: Request, res: Response): Response | Promise<Response> {
 
         const { params: { uuid } } = req
         const user = req.user
         return this.postService.delete(uuid, user)
             .then((result) => {
+                let obj = {}
                 return HttpResponse.success(req, res, result);
+            })
+            .catch((err) => HttpErrorHandler(err, req, res));
+    }
+
+    findOneByUuid(req: Request, res: Response): Response | Promise<Response> {
+        const { params: { uuid } } = req
+        const user = req.user
+        return this.postService.findPostByUuid(uuid, user)
+            .then((result) => {
+                let obj = {}
+                return HttpResponse.success(req, res, result?.toJson());
             })
             .catch((err) => HttpErrorHandler(err, req, res));
     }

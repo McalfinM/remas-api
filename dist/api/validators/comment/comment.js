@@ -4,7 +4,6 @@ exports.updatePost = exports.bodyValidation = void 0;
 const express_validator_1 = require("express-validator");
 const bodyValidation = () => {
     return [
-        express_validator_1.body('post_uuid', 'user dibutuhkan').notEmpty(),
         express_validator_1.body('comment', 'comment harus di isi').notEmpty(),
     ];
 };

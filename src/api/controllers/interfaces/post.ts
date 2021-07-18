@@ -6,4 +6,6 @@ export interface IPostController {
     findOne(req: Request, res: Response): Response | Promise<Response>
     index(req: Request, res: Response): Response | Promise<Response>
     delete(req: Request, res: Response): Response | Promise<Response>
+    findWithAuth(req: Request, res: Response): Response | Promise<Response>
+    findOneByUuid(req: Request, res: Response): Response | Promise<Response>
 }

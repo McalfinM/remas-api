@@ -8,6 +8,7 @@ import UserModel from '../models/user';
 import { IPostRepository } from "./interfaces/post";
 import PostEntity from "../entities/post";
 import PostModel from "../models/post";
+import ProfileEntity from "../entities/profile";
 
 @injectable()
 class PostRepository implements IPostRepository {
@@ -56,10 +57,11 @@ class PostRepository implements IPostRepository {
         return data
     }
 
-    async findDetailPost(slug: string): Promise<PostEntity | null> {
+    async findPostByUuid(uuid: string, user: IUser): Promise<PostEntity | null> {
 
         const result = await PostModel.findOne({
-            slug: slug,
+            uuid: uuid,
+            "created_by.uuid": user.uuid,
             $or: [{ deleted_at: undefined }]
         })
 
@@ -73,6 +75,46 @@ class PostRepository implements IPostRepository {
         },
             { deleted_at: new Date }
         )
+
+        return { success: true }
+    }
+
+    async findPostWithAuth(user: IUser): Promise<{ data: PostEntity[] }> {
+        return await PostModel.find({ "created_by.uuid": user.uuid, deleted_at: null })
+            .then(result => {
+                return {
+                    data: result.map((data) => {
+                        return new PostEntity({
+                            uuid: data.uuid,
+                            created_by: data.created_by,
+                            slug: data.slug,
+                            category: {
+                                uuid: data.category?.uuid ?? '',
+                                name: data.category?.name ?? ''
+                            },
+                            image: data.image,
+                            title: data.title,
+                            cloudinary_id: data.cloudinary_id,
+                            // comments: data.comments,
+                            content: data.content,
+                            created_at: data.created_at,
+                            deleted_at: data.deleted_at,
+                            updated_at: data.updated_at
+                        })
+                    })
+                }
+            })
+    }
+
+    async chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }> {
+        const response = await PostModel.updateMany({ "created_by.uuid": data.user_uuid }, {
+            created_by: {
+                uuid: data.user_uuid ?? '',
+                name: data.main_information?.nickname ?? '',
+                image: data.main_information?.image,
+                slug: data.slug
+            }
+        })
 
         return { success: true }
     }
@@ -104,7 +146,10 @@ class PostRepository implements IPostRepository {
                             uuid: data.uuid,
                             created_by: data.created_by,
                             slug: data.slug,
-                            category: data.category,
+                            category: {
+                                uuid: data.category?.uuid ?? '',
+                                name: data.category?.name ?? ''
+                            },
                             image: data.image,
                             title: data.title,
                             cloudinary_id: data.cloudinary_id,

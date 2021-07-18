@@ -6,7 +6,6 @@ import { ILike } from "./interfaces/like";
 class LikeEntity extends BaseEntity {
     protected _uuid: string
     protected _user_uuid: string
-    protected _ip_address: string
     protected _post_uuid: string
     protected _created_at: Date | null
     protected _updated_at: Date | null
@@ -16,7 +15,6 @@ class LikeEntity extends BaseEntity {
         super();
         this._uuid = params.uuid
         this._user_uuid = params.user_uuid
-        this._ip_address = params.ip_address
         this._post_uuid = params.post_uuid
         this._created_at = params.created_at
         this._updated_at = params.updated_at
@@ -36,13 +34,6 @@ class LikeEntity extends BaseEntity {
 
     set user_uuid(user_uuid: string) {
         this._user_uuid = user_uuid
-    }
-    get ip_address(): string {
-        return this._ip_address
-    }
-
-    set ip_address(ip_address: string) {
-        this._ip_address = ip_address
     }
     get post_uuid(): string {
         return this._post_uuid
@@ -77,7 +68,6 @@ class LikeEntity extends BaseEntity {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,
@@ -89,7 +79,6 @@ class LikeEntity extends BaseEntity {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,
@@ -101,7 +90,6 @@ class LikeEntity extends BaseEntity {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,

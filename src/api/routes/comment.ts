@@ -1,10 +1,12 @@
 import BaseRouter from './baseRouter'
-import { bodyValidation } from '../validators/vehicleBrand'
+import { bodyValidation } from '../validators/comment/comment'
 import { Router } from 'express'
 import IRouter from './interfaces/router'
 import { decorate, inject, injectable } from 'inversify'
 import { TYPES } from '../../types'
 import { ICommentController } from '../controllers/interfaces/comment'
+import { authenticate } from '../../middlewares/auth'
+import { validate } from '../../middlewares/requestBodyValidation'
 
 @injectable()
 class CommentRouter extends BaseRouter {
@@ -22,10 +24,10 @@ class CommentRouter extends BaseRouter {
 
     routes(): IRouter {
         // call controllers here
-        this.router.post('/', this.commentController.create)
-        this.router.put('/:uuid', this.commentController.update)
-        this.router.delete('/:uuid', this.commentController.delete)
-        this.router.get('/:uuid', this.commentController.findOne)
+        this.router.post('/', authenticate, bodyValidation(), validate, this.commentController.create)
+        this.router.put('/:uuid', authenticate, this.commentController.update)
+        this.router.delete('/:uuid', authenticate, this.commentController.delete)
+        this.router.get('/:uuid', authenticate, this.commentController.findOne)
         return this
     }
 

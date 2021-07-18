@@ -3,6 +3,7 @@
 import { IUser } from '../../models/interfaces/user'
 import CreateCommentRequest from '../../request/comment/createCommentRequest'
 import CommentEntity from '../../entities/comment'
+import ProfileEntity from '../../entities/profile'
 
 export interface ICommentService {
     delete(uuid: string, user: IUser): Promise<{ success: true }>
@@ -10,4 +11,5 @@ export interface ICommentService {
     update(uuid: string, data: CreateCommentRequest, user: IUser): Promise<{ success: true }>
     findOne(uuid: string): Promise<CommentEntity | null>
     find(uuid: string): Promise<{ data: CommentEntity[] }>
+    chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }>
 }

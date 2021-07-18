@@ -5,6 +5,9 @@ import { TYPES } from "../../types";
 import { IProfileController } from "./interfaces/profile";
 import GetProfileRequest from "../../request/profile/getProfileRequest";
 import { IProfileService } from "../../services/interfaces/profile";
+import { HttpErrorHandler } from "../../helpers/errors";
+import UpdatePostRequest from "../../request/post/updatePostRequest";
+import UpdateProfileRequest from "../../request/profile/updateProfileRequest";
 
 @injectable()
 class ProfileCotnroller implements IProfileController {
@@ -33,16 +36,42 @@ class ProfileCotnroller implements IProfileController {
                 obj.totalData = result.total || 0
                 obj.currentPage = pageVal
                 obj.limit = limitVal
-                // res.setHeader("X-Pagination-Total-Page", Math.ceil(result.total / +limitVal));
-                // res.setHeader("X-Pagination-Total-Data", result.total || 0);
-                // res.setHeader("X-Pagination-Current-Page", pageVal);
-                // res.setHeader("X-Pagination-Limit", limitVal);
+
                 obj.data = result.data.map((data) => data.toListData());
 
                 return HttpResponse.success(req, res, obj);
             })
 
 
+    }
+
+    profile(req: Request, res: Response): Promise<Response> {
+        const user = req.user
+        return this.profileService.findOne(user.uuid)
+            .then((result) => {
+                return HttpResponse.success(req, res, result?.toDetailData());
+            })
+            .catch((err) => HttpErrorHandler(err, req, res));
+    }
+
+
+    findOneBySlug(req: Request, res: Response): Promise<Response> {
+        const { params: { slug } } = req
+        return this.profileService.findOneBySlug(slug)
+            .then((result) => {
+                return HttpResponse.success(req, res, result,);
+            })
+            .catch((err) => HttpErrorHandler(err, req, res));
+    }
+
+    update(req: Request, res: Response): Promise<Response> {
+        const user = req.user
+        const bodyData = new UpdateProfileRequest(req.body)
+        return this.profileService.update(bodyData, user)
+            .then((result) => {
+                return HttpResponse.success(req, res, result);
+            })
+            .catch((err) => HttpErrorHandler(err, req, res));
     }
 
 }

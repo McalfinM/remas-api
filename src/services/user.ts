@@ -42,10 +42,11 @@ class UserService implements IUserService {
             roles: userEntity.roles,
             main_information: {
                 nickname: userEntity.name ?? '',
-                image: 'http://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+                image: 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
             },
             idul_adha: null,
-            ramadhan: null
+            ramadhan: null,
+            deleted_at: null
         })
         await this.userRepository.create(userEntity)
         await this.profileService.create(profile)

@@ -28,7 +28,8 @@ export interface IProfile extends Document {
     user_uuid: string
     slug: string
     main_information: IMainInformation
-    ramadhan: IZakat
-    idul_adha: IIdulAdha
+    ramadhan: IZakat | null
+    idul_adha: IIdulAdha | null
     roles: string[]
+    deleted_at: Date | null
 }

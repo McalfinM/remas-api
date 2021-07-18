@@ -24,25 +24,39 @@ let LikeService = class LikeService {
         this.dispatcher = dispatcher;
     }
     async create(data, user) {
-        const likeEntity = new like_1.default({
-            uuid: uuid_1.v4(),
-            user_uuid: user.uuid,
-            post_uuid: data.post_uuid,
-            ip_address: data.ip_address,
-            created_at: new Date,
-            deleted_at: null,
-            updated_at: new Date
-        });
-        const comment = await this.likeRepository.create(likeEntity);
+        const findUuidUser = await this.findOne(data.post_uuid, user.uuid);
+        if (findUuidUser) {
+            if (findUuidUser.deleted_at === null) {
+                await this.delete(findUuidUser.uuid, user);
+            }
+            else {
+                await this.updateDeleteToNullAgain(findUuidUser.uuid);
+            }
+        }
+        else {
+            const likeEntity = new like_1.default({
+                uuid: uuid_1.v4(),
+                user_uuid: user.uuid,
+                post_uuid: data.post_uuid,
+                created_at: new Date,
+                deleted_at: null,
+                updated_at: new Date
+            });
+            const likes = await this.likeRepository.create(likeEntity);
+        }
         return { success: true };
     }
-    async findOne(uuid) {
-        const result = await this.likeRepository.findOne(uuid);
+    async findOne(post_uuid, user_uuid) {
+        const result = await this.likeRepository.findOne(post_uuid, user_uuid);
         return result;
     }
     async find(post_uuid) {
         const findComment = await this.likeRepository.find(post_uuid);
         return findComment;
+    }
+    async updateDeleteToNullAgain(uuid) {
+        const likes = await this.likeRepository.updateDeleteToNullAgain(uuid);
+        return { success: true };
     }
     async delete(uuid, user) {
         const data = new Date;

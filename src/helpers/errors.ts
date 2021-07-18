@@ -1,4 +1,4 @@
-import Bugsnag from "@bugsnag/js";
+
 import { Response, Request } from "express";
 
 interface ICustomError {
@@ -29,34 +29,6 @@ export function HttpErrorHandler(err: ICustomError, req: Request, res: Response)
     }
 
     console.log(err)
-
-    Bugsnag.notify(err.error, function (event) {
-        event.severity = 'info'
-        if (err.path) {
-            event.addMetadata("path", { service: err.path.split(" ")[0], path: err.path })
-        }
-
-        if (err.metadata) {
-            event.addMetadata("metadata", err.metadata)
-        }
-
-        if (req.user) {
-            event.addMetadata("user", req.user)
-            event.setUser(req.user.uuid, req.user.email, req.user.name)
-        }
-
-        event.addMetadata("request", {
-            method: req.method,
-            url: req.protocol + '://' + req.get('host') + req.originalUrl,
-            body: req.body,
-            params: req.params,
-            query: req.query
-        })
-
-        event.addMetadata("response", errorReponse)
-
-    })
-
     return res.status(errorReponse.statusCode).jsonp(errorReponse)
 }
 

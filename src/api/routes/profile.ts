@@ -7,6 +7,7 @@ import { validate } from '../../middlewares/requestValidation'
 import { decorate, inject, injectable } from 'inversify'
 import { TYPES } from '../../types'
 import { IProfileController } from '../controllers/interfaces/profile'
+import { authenticate } from '../../middlewares/auth'
 
 @injectable()
 class ProfileRouter extends BaseRouter {
@@ -25,6 +26,10 @@ class ProfileRouter extends BaseRouter {
     routes(): IRouter {
         // call controllers here
         this.router.get('/', this.profileController.index)
+        this.router.patch('/', authenticate, this.profileController.update)
+        this.router.get('/my-profile', authenticate, this.profileController.profile)
+        this.router.get('/:slug', this.profileController.findOneBySlug)
+
         return this
     }
 

@@ -19,14 +19,22 @@ let IndexRouter = class IndexRouter {
     profileRouter;
     commentRouter;
     likeRouter;
+    categoryRouter;
+    remasLikeRouter;
+    commentRemasRouter;
+    registrationMemberRemasRouter;
     router;
-    constructor(userRouter, authRouter, postRouter, profileRouter, commentRouter, likeRouter) {
+    constructor(userRouter, authRouter, postRouter, profileRouter, commentRouter, likeRouter, categoryRouter, remasLikeRouter, commentRemasRouter, registrationMemberRemasRouter) {
         this.userRouter = userRouter;
         this.authRouter = authRouter;
         this.postRouter = postRouter;
         this.profileRouter = profileRouter;
         this.commentRouter = commentRouter;
         this.likeRouter = likeRouter;
+        this.categoryRouter = categoryRouter;
+        this.remasLikeRouter = remasLikeRouter;
+        this.commentRemasRouter = commentRemasRouter;
+        this.registrationMemberRemasRouter = registrationMemberRemasRouter;
         this.router = express_1.Router();
         this.routes();
     }
@@ -36,7 +44,11 @@ let IndexRouter = class IndexRouter {
         this.router.use("/api/v1/posts", this.postRouter.router);
         this.router.use("/api/v1/profiles", this.profileRouter.router);
         this.router.use("/api/v1/comments", this.commentRouter.router);
+        this.router.use("/api/v1/category", this.categoryRouter.router);
         this.router.use("/api/v1/likes", this.likeRouter.router);
+        this.router.use("/api/v1/remas-likes", this.remasLikeRouter.router);
+        this.router.use("/api/v1/remas-comments", this.commentRemasRouter.router);
+        this.router.use("/api/v1/remas-member-register", this.registrationMemberRemasRouter.router);
         return this;
     }
 };
@@ -47,6 +59,10 @@ IndexRouter = __decorate([
     __param(2, inversify_1.inject(types_1.TYPES.PostRouter)),
     __param(3, inversify_1.inject(types_1.TYPES.ProfileRouter)),
     __param(4, inversify_1.inject(types_1.TYPES.CommentRouter)),
-    __param(5, inversify_1.inject(types_1.TYPES.LikeRouter))
+    __param(5, inversify_1.inject(types_1.TYPES.LikeRouter)),
+    __param(6, inversify_1.inject(types_1.TYPES.CategoryRouter)),
+    __param(7, inversify_1.inject(types_1.TYPES.RemasLikeRouter)),
+    __param(8, inversify_1.inject(types_1.TYPES.CommentRemasRouter)),
+    __param(9, inversify_1.inject(types_1.TYPES.RegistrationMemberRemasRouter))
 ], IndexRouter);
 exports.default = IndexRouter;

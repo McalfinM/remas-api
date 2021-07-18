@@ -15,7 +15,12 @@ class IndexRouter {
     @inject(TYPES.PostRouter) private postRouter: IRouter,
     @inject(TYPES.ProfileRouter) private profileRouter: IRouter,
     @inject(TYPES.CommentRouter) private commentRouter: IRouter,
-    @inject(TYPES.LikeRouter) private likeRouter: IRouter
+    @inject(TYPES.LikeRouter) private likeRouter: IRouter,
+    @inject(TYPES.CategoryRouter) private categoryRouter: IRouter,
+    @inject(TYPES.RemasLikeRouter) private remasLikeRouter: IRouter,
+    @inject(TYPES.CommentRemasRouter) private commentRemasRouter: IRouter,
+    @inject(TYPES.RegistrationMemberRemasRouter) private registrationMemberRemasRouter: IRouter
+
   ) {
     this.router = Router();
     this.routes();
@@ -27,7 +32,12 @@ class IndexRouter {
     this.router.use("/api/v1/posts", this.postRouter.router)
     this.router.use("/api/v1/profiles", this.profileRouter.router)
     this.router.use("/api/v1/comments", this.commentRouter.router)
+    this.router.use("/api/v1/category", this.categoryRouter.router)
     this.router.use("/api/v1/likes", this.likeRouter.router)
+    this.router.use("/api/v1/remas-likes", this.remasLikeRouter.router)
+    this.router.use("/api/v1/remas-comments", this.commentRemasRouter.router)
+    this.router.use("/api/v1/remas-member-register", this.registrationMemberRemasRouter.router)
+
     return this
   }
 

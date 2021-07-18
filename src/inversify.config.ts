@@ -49,6 +49,34 @@ import { ILikeService } from "./services/interfaces/like";
 import LikeService from "./services/like";
 import { ILikeRepository } from "./repositories/interfaces/like";
 import LikeRepository from "./repositories/like";
+import { ICategoryConrtoller } from "./api/controllers/interfaces/categories";
+import { ICategoryService } from "./services/interfaces/categories";
+import { ICategoryRepository } from "./repositories/interfaces/categories";
+import CategoryController from "./api/controllers/categories";
+import CategoryRouter from "./api/routes/categories";
+import CategoryRepository from "./repositories/categories";
+import CategoryService from "./services/categories";
+import RemasLikeRouter from "./api/routes/remasLike";
+import { IRemasLikeController } from "./api/controllers/interfaces/remasLike";
+import RemasLikeController from "./api/controllers/remasLike";
+import { IRemasLikeService } from "./services/interfaces/remasLike";
+import RemasLikeService from "./services/remasLike";
+import { IRemasLikeRepository } from "./repositories/interfaces/remasLike";
+import RemasLikeRepository from "./repositories/remasLike";
+import CommentRemasRouter from "./api/routes/commentRemas";
+import { ICommentRemasController } from "./api/controllers/interfaces/commentRemas";
+import CommentRemasController from "./api/controllers/commentRemas";
+import { ICommentRemasService } from "./services/interfaces/commentRemas";
+import CommentRemasService from './services/commentRemas'
+import { ICommentRemasRepository } from "./repositories/interfaces/commentRemas";
+import CommentRemasRepository from './repositories/commentRemas'
+import RegistrationMemberRemasRouter from "./api/routes/registrationMemberRemasRouter";
+import { IRegistrationMemberRemasService } from "./services/interfaces/registrationMemberRemas";
+import { IRegistrationMemberRemasRepository } from "./repositories/interfaces/registrationMemberRemas";
+import RegistrationMemberRemasRepository from "./repositories/registrationMemberRemas";
+import RegistrationMemberRemasService from "./services/registrationMemberRemas";
+import { IRegistrationMemberRemasController } from "./api/controllers/interfaces/registrationMemberRemas";
+import RegistrationMemberRemasController from "./api/controllers/registrationMembeREmasController";
 
 
 decorate(injectable(), BaseRouter);
@@ -89,6 +117,26 @@ container.bind<IRouter>(TYPES.LikeRouter).to(LikeRouter).inSingletonScope()
 container.bind<ILikeController>(TYPES.LikeController).to(LikeController).inSingletonScope()
 container.bind<ILikeService>(TYPES.LikeService).to(LikeService).inSingletonScope()
 container.bind<ILikeRepository>(TYPES.LikeRepository).to(LikeRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.CategoryRouter).to(CategoryRouter).inSingletonScope()
+container.bind<ICategoryConrtoller>(TYPES.CategoryController).to(CategoryController).inSingletonScope()
+container.bind<ICategoryService>(TYPES.CategoryService).to(CategoryService).inSingletonScope()
+container.bind<ICategoryRepository>(TYPES.CategoryRepository).to(CategoryRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.RemasLikeRouter).to(RemasLikeRouter).inSingletonScope()
+container.bind<IRemasLikeController>(TYPES.RemasLikeController).to(RemasLikeController).inSingletonScope()
+container.bind<IRemasLikeService>(TYPES.RemasLikeService).to(RemasLikeService).inSingletonScope()
+container.bind<IRemasLikeRepository>(TYPES.RemasLikeRepository).to(RemasLikeRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.CommentRemasRouter).to(CommentRemasRouter).inSingletonScope()
+container.bind<ICommentRemasController>(TYPES.CommentRemasController).to(CommentRemasController).inSingletonScope()
+container.bind<ICommentRemasService>(TYPES.CommentRemasService).to(CommentRemasService).inSingletonScope()
+container.bind<ICommentRemasRepository>(TYPES.CommentRemasRepository).to(CommentRemasRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.RegistrationMemberRemasRouter).to(RegistrationMemberRemasRouter).inSingletonScope()
+container.bind<IRegistrationMemberRemasController>(TYPES.RegistrationMemberRemasController).to(RegistrationMemberRemasController).inSingletonScope()
+container.bind<IRegistrationMemberRemasService>(TYPES.RegistrationMemberRemasService).to(RegistrationMemberRemasService).inSingletonScope()
+container.bind<IRegistrationMemberRemasRepository>(TYPES.RegistrationMemberRemasRepository).to(RegistrationMemberRemasRepository).inSingletonScope()
 
 container.bind<EventDispatcher>(TYPES.ProducerDispatcher).to(ProducerDispatcher).inSingletonScope()
 container.bind<EventDispatcher>(TYPES.ConsumerDispatcher).to(ConsumerDispatcher).inSingletonScope()

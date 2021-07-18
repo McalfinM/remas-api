@@ -35,12 +35,17 @@ let AuthController = class AuthController {
             }
             const compare = await authentication_1.default.passwordCompare(password, data.password);
             if (compare) {
-                const token = await authentication_1.default.generateToken(data.name ?? '', email, data.uuid ?? '');
+                const token = await authentication_1.default.generateToken(data.name ?? '', data.roles, data.uuid ?? '');
                 // data._id = undefined;
+                console.log(token);
                 return res.status(200).json({
                     token_type: 'Bearer',
                     token: token,
-                    user: data.uuid
+                    user: {
+                        uuid: data.uuid,
+                        roles: data.roles
+                    },
+                    expire_at: 86400
                 });
             }
         }

@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorUnauthorized = exports.ErrorUnauthenticated = exports.ErrorBadRequest = exports.ErrorInternalServerError = exports.ErrorUnprocessableEntity = exports.ErrorNotFound = exports.CustomError = exports.HttpErrorHandler = void 0;
-const js_1 = __importDefault(require("@bugsnag/js"));
 function HttpErrorHandler(err, req, res) {
     const internalServerErrorCode = 500;
     const errorReponse = {
@@ -19,27 +15,6 @@ function HttpErrorHandler(err, req, res) {
         errorReponse.message = "Internal Server Error";
     }
     console.log(err);
-    js_1.default.notify(err.error, function (event) {
-        event.severity = 'info';
-        if (err.path) {
-            event.addMetadata("path", { service: err.path.split(" ")[0], path: err.path });
-        }
-        if (err.metadata) {
-            event.addMetadata("metadata", err.metadata);
-        }
-        if (req.user) {
-            event.addMetadata("user", req.user);
-            event.setUser(req.user.uuid, req.user.email, req.user.name);
-        }
-        event.addMetadata("request", {
-            method: req.method,
-            url: req.protocol + '://' + req.get('host') + req.originalUrl,
-            body: req.body,
-            params: req.params,
-            query: req.query
-        });
-        event.addMetadata("response", errorReponse);
-    });
     return res.status(errorReponse.statusCode).jsonp(errorReponse);
 }
 exports.HttpErrorHandler = HttpErrorHandler;

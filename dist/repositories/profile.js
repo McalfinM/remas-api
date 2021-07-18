@@ -30,8 +30,30 @@ let ProfileRepository = class ProfileRepository {
         });
         return result ? new profile_1.default(result) : null;
     }
+    async findOneBySlug(slug) {
+        const result = await profile_2.default.findOne({
+            slug: slug,
+        });
+        return result ? new profile_1.default(result) : null;
+    }
     async update(data) {
-        const result = await profile_2.default.updateOne();
+        const result = await profile_2.default.updateOne({
+            uuid: data.uuid, user_uuid: data.user_uuid,
+        }, {
+            idul_adha: data.idul_adha ?? null,
+            main_information: {
+                nickname: data.main_information?.nickname,
+                full_name: data.main_information?.full_name,
+                visi: data.main_information?.visi,
+                misi: data.main_information?.misi,
+                image: data.main_information?.image,
+                description: data.main_information?.description,
+                cloudinary_id: data.main_information?.cloudinary_id
+            },
+            ramadhan: data.ramadhan ?? null,
+            slug: data.slug,
+            user_uuid: data.user_uuid,
+        });
         return data;
     }
     async index(specification) {
@@ -54,7 +76,8 @@ let ProfileRepository = class ProfileRepository {
                         user_uuid: '',
                         uuid: '',
                         slug: data.slug,
-                        main_information: data.main_information
+                        main_information: data.main_information,
+                        deleted_at: null
                     });
                 }),
             };

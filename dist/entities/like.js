@@ -7,7 +7,6 @@ const baseEntity_1 = __importDefault(require("./baseEntity"));
 class LikeEntity extends baseEntity_1.default {
     _uuid;
     _user_uuid;
-    _ip_address;
     _post_uuid;
     _created_at;
     _updated_at;
@@ -16,7 +15,6 @@ class LikeEntity extends baseEntity_1.default {
         super();
         this._uuid = params.uuid;
         this._user_uuid = params.user_uuid;
-        this._ip_address = params.ip_address;
         this._post_uuid = params.post_uuid;
         this._created_at = params.created_at;
         this._updated_at = params.updated_at;
@@ -33,12 +31,6 @@ class LikeEntity extends baseEntity_1.default {
     }
     set user_uuid(user_uuid) {
         this._user_uuid = user_uuid;
-    }
-    get ip_address() {
-        return this._ip_address;
-    }
-    set ip_address(ip_address) {
-        this._ip_address = ip_address;
     }
     get post_uuid() {
         return this._post_uuid;
@@ -68,7 +60,6 @@ class LikeEntity extends baseEntity_1.default {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,
@@ -79,7 +70,6 @@ class LikeEntity extends baseEntity_1.default {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,
@@ -90,7 +80,6 @@ class LikeEntity extends baseEntity_1.default {
         return {
             uuid: this.uuid,
             user_uuid: this.user_uuid,
-            ip_address: this.ip_address,
             post_uuid: this.post_uuid,
             created_at: this.created_at,
             updated_at: this.updated_at,

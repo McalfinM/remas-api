@@ -3,7 +3,6 @@ import { translate } from '../../../helpers/validatorTranslation'
 
 export const bodyValidation = (): ValidationChain[] => {
     return [
-        body('post_uuid', 'user dibutuhkan').notEmpty(),
         body('comment', 'comment harus di isi').notEmpty(),
     ]
 }

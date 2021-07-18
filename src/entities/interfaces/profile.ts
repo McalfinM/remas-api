@@ -30,4 +30,5 @@ export interface IProfile {
     ramadhan: IZakat | null
     idul_adha: IIdulAdha | null
     roles?: string[]
+    deleted_at: Date | null
 }

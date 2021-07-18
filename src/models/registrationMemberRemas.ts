@@ -10,6 +10,10 @@ const RegistrationSchema: Schema = new Schema(
         address: { type: String },
         handphone: { type: String },
         user_uuid: { type: String },
+        image: { type: String },
+        ipaddr: { type: String },
+        description: { type: String },
+        created_by: { type: Object },
         created_at: { type: Date },
         updated_at: { type: Date },
         deleted_at: { type: Date },
@@ -19,9 +23,9 @@ const RegistrationSchema: Schema = new Schema(
 RegistrationSchema.index('full_name')
 RegistrationSchema.index('uuid')
 
-const RegistrationModel: Model<IRegsitration> = model(
-    "registrations",
+const RegistrationMemberRemasModel: Model<IRegsitration> = model(
+    "registrations_member_remas",
     RegistrationSchema
 );
 
-export default RegistrationModel;
+export default RegistrationMemberRemasModel;
