@@ -39,7 +39,7 @@
     "tsc": "rm -rf dist/ && tsc",
     "ts": "rm -rf dist/ && tsc -w",
     "dev": "nodemon dist/app.js",
-    "start": "node src/app.js",
+    "start": "node dist/app.js",
     "seed": "NODE_OPTIONS=--max-old-space-size=8192 ts-node src/seeds/seeder.ts"
   },
   "devDependencies": {
