@@ -6,6 +6,7 @@ class GetPostSpecification implements ISpecification {
     protected _title?: string;
     protected _category?: string;
     protected _sort_by: any;
+    protected _user_uuid?: string
     protected _page: number;
     protected _limit: number;
     protected _search?: string;
@@ -14,6 +15,7 @@ class GetPostSpecification implements ISpecification {
         title?: string;
         category?: string;
         sort?: string
+        user_uuid?: string
         page?: number
         limit?: number
         search?: string
@@ -21,6 +23,7 @@ class GetPostSpecification implements ISpecification {
         this._search = request.search;
         this._title = request.title;
         this._category = request.category;
+        this._user_uuid = request.user_uuid;
         this._sort_by = request.sort ?? '-created_at'
         this._page = request.page ?? 1
         this._limit = request.limit ?? 30
@@ -41,6 +44,10 @@ class GetPostSpecification implements ISpecification {
 
         if (this._category) {
             specifications["category"] = this._category
+        }
+
+        if (this._user_uuid) {
+            specifications["created_by.uuid"] = this._user_uuid
         }
 
         if (or_specifications.length > 0) {

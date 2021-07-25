@@ -13,22 +13,27 @@ import CreateCommentRequest from "../request/comment/createCommentRequest";
 import { ICommentRepository } from "../repositories/interfaces/comment";
 import { ErrorNotFound } from "../helpers/errors";
 import ProfileEntity from "../entities/profile";
+import { IUserService } from "./interfaces/user";
+import { IUserRepository } from "../repositories/interfaces/user";
 
 @injectable()
 class CommentService implements ICommentService {
 
     constructor(
         @inject(TYPES.CommentRepository) private commentRepository: ICommentRepository,
+        @inject(TYPES.UserRepository) private userService: IUserRepository,
         @inject(TYPES.ProducerDispatcher) private dispatcher: EventDispatcher,
     ) { }
 
     async create(data: CreateCommentRequest, user: IUser): Promise<{ success: true }> {
         console.log(data)
+        const userEntity = await this.userService.findOne(user.uuid)
+        if (!userEntity) throw new ErrorNotFound('User not found', '@Service Create Comment')
         const commentEntity = new CommentEntity({
             uuid: uuidv4(),
             created_by: {
-                uuid: user.uuid,
-                name: user.name
+                uuid: userEntity.uuid ?? '',
+                name: userEntity.name ?? ''
             },
             post_uuid: data.post_uuid,
             ip_address: data.ip_address,

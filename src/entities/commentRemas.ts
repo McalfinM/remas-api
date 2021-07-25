@@ -8,10 +8,10 @@ class CommentRemasEntity extends BaseEntity {
     protected _created_by: IEmbed
     protected _comment: string
     protected _remas_uuid: string
-    protected _ip_address: string | null
+    protected _ip_address?: string | null
     protected _created_at: Date | null
     protected _updated_at: Date | null
-    protected _deleted_at: Date | null
+    protected _deleted_at?: Date | null
 
     constructor(params: ICommentRemas) {
         super();
@@ -47,11 +47,11 @@ class CommentRemasEntity extends BaseEntity {
         this._comment = comment
     }
 
-    get ip_address(): string | null {
+    get ip_address(): string | null | undefined {
         return this._ip_address
     }
 
-    set ip_address(ip_address: string | null) {
+    set ip_address(ip_address: string | null | undefined) {
         this._ip_address = ip_address
     }
 
@@ -73,10 +73,10 @@ class CommentRemasEntity extends BaseEntity {
         return this._updated_at
     }
 
-    set deleted_at(deleted_at: Date | null) {
+    set deleted_at(deleted_at: Date | null | undefined) {
         this._deleted_at = deleted_at
     }
-    get deleted_at(): Date | null {
+    get deleted_at(): Date | null | undefined {
         return this._deleted_at
     }
 
@@ -97,15 +97,13 @@ class CommentRemasEntity extends BaseEntity {
         };
     }
 
-    toListData(): {} {
+    toListData(): object {
         return {
             uuid: this._uuid,
             created_by: this._created_by,
             comment: this._comment,
             remas_uuid: this._remas_uuid,
-            ip_address: this._ip_address,
             created_at: this._created_at,
-            deleted_at: this._deleted_at,
             updated_at: this._updated_at,
         };
     }

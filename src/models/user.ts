@@ -8,6 +8,7 @@ const UserSchema: Schema = new Schema(
     email: { type: String },
     password: { type: String },
     roles: { type: Array },
+    is_active: { type: Boolean },
     created_at: { type: Date },
     updated_at: { type: Date },
     deleted_at: { type: Date },

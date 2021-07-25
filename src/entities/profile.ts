@@ -8,6 +8,7 @@ class ProfileEntity extends BaseEntity {
     protected _slug: string
     protected _main_information: IMainInformation | null
     protected _roles?: string[]
+    protected _is_active?: boolean
     protected _ramadhan?: IZakat | null
     protected _idul_adha?: IIdulAdha | null
     protected _deleted_at: Date | null
@@ -18,6 +19,7 @@ class ProfileEntity extends BaseEntity {
         this._user_uuid = params.user_uuid
         this._slug = params.slug
         this._main_information = params.main_information
+        this._is_active = params.is_active
         this._ramadhan = params.ramadhan
         this._idul_adha = params.idul_adha
         this._roles = params.roles
@@ -44,6 +46,12 @@ class ProfileEntity extends BaseEntity {
     }
     set roles(roles: string[] | undefined) {
         this._roles = roles
+    }
+    get is_active(): boolean | undefined {
+        return this._is_active
+    }
+    set is_active(is_active: boolean | undefined) {
+        this._is_active = is_active
     }
     set user_uuid(user_uuid: string | undefined) {
         this._user_uuid = user_uuid

@@ -27,7 +27,7 @@ class CommentRemasRepository implements ICommentRemasRepository {
     async findOne(uuid: string): Promise<CommentRemasEntity | null> {
 
         const result = await CommentRemasModel.findOne({
-            user_uuid: uuid,
+            "created_by.uuid": uuid,
         })
 
         return result ? new CommentRemasEntity(result) : null
@@ -64,8 +64,8 @@ class CommentRemasRepository implements ICommentRemasRepository {
     }
 
     async find(post_uuid: string): Promise<{ data: CommentRemasEntity[] }> {
-
-        return CommentRemasModel.find({ post_uuid: post_uuid })
+        console.log(post_uuid, 'ini psot')
+        return CommentRemasModel.find({ remas_uuid: post_uuid })
             .then(result => {
                 return {
                     data: result.map(data => {
@@ -73,11 +73,9 @@ class CommentRemasRepository implements ICommentRemasRepository {
                             uuid: data.uuid,
                             created_by: data.created_by,
                             remas_uuid: data.remas_uuid,
-                            ip_address: data.ip_address,
                             comment: data.comment,
                             created_at: data.created_at,
                             updated_at: data.updated_at,
-                            deleted_at: data.updated_at
                         })
                     })
                 }

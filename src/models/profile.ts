@@ -8,6 +8,7 @@ const ProfileSchema: Schema = new Schema(
         main_information: { type: Object },
         ramadhan: { type: Object },
         slug: { type: String },
+        is_active: { type: Boolean },
         idul_adha: { type: Object },
         roles: { type: Array },
         deleted_at: { type: Date }

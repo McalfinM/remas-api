@@ -59,7 +59,7 @@ class ProfileCotnroller implements IProfileController {
         const { params: { slug } } = req
         return this.profileService.findOneBySlug(slug)
             .then((result) => {
-                return HttpResponse.success(req, res, result,);
+                return HttpResponse.success(req, res, result);
             })
             .catch((err) => HttpErrorHandler(err, req, res));
     }

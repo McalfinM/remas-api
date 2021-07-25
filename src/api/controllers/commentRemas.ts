@@ -7,6 +7,7 @@ import { HttpErrorHandler } from "../../helpers/errors";
 import { ICommentRemasController } from "./interfaces/commentRemas";
 import { ICommentRemasService } from "../../services/interfaces/commentRemas";
 import CreateCommentRemasRequest from "../../request/comment/createCommentRemasRequest";
+import { ipaddr } from "../../helpers/ip";
 
 @injectable()
 class CommentRemasController implements ICommentRemasController {
@@ -18,11 +19,11 @@ class CommentRemasController implements ICommentRemasController {
 
     create(req: Request, res: Response): Promise<Response> {
 
-        const postData = new CreateCommentRemasRequest(
-            req.body
-        );
+        const postData = new CreateCommentRemasRequest({
+            ...req.body,
+            ip_address: ipaddr
+        });
         const user = req.user
-        console.log('from controller', user)
         return this.commentService.create(postData, user)
             .then((result) => {
                 return HttpResponse.created(req, res, result);

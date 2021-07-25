@@ -51,6 +51,7 @@ class GetProfileSpecification implements ISpecification {
             specifications["$or"] = or_specifications;
         }
         specifications.deleted_at = null;
+        specifications.is_active = true
         specifications.roles = ['member', 'remaja_masjid']
 
         return specifications;

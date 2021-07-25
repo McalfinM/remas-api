@@ -10,25 +10,31 @@ import GetProfileRequest from "../request/profile/getProfileRequest";
 import GetProfileSpecification from "../repositories/specifications/profileSpecification"
 import slugify from "slugify";
 import { IUser } from "../models/interfaces/user";
-import CreateUserRequest from "../request/user/createUserRequest";
 import UpdateProfileRequest from "../request/profile/updateProfileRequest";
 import { ErrorNotFound } from "../helpers/errors";
 import { cloud } from "../helpers/cloudinary";
 import { IRemasLikeService } from "./interfaces/remasLike";
-import { IPostService } from "./interfaces/post";
 import { IPostRepository } from "../repositories/interfaces/post";
 import { ICommentRemasService } from "./interfaces/commentRemas";
 import { ICommentService } from "./interfaces/comment";
+import CommentRemasEntity from "../entities/commentRemas";
+import { IUserService } from "./interfaces/user";
+import { IUserRepository } from "../repositories/interfaces/user";
+import { IRequestRemasService } from "./interfaces/requestRemas";
 
 @injectable()
 class ProfileService implements IProfileService {
 
     constructor(
+
         @inject(TYPES.ProfileRepository) private profileReopsitory: IProfileRepository,
         @inject(TYPES.PostRepository) private postService: IPostRepository,
         @inject(TYPES.RemasLikeService) private remasService: IRemasLikeService,
         @inject(TYPES.CommentRemasService) private commentRemasService: ICommentRemasService,
         @inject(TYPES.CommentService) private commentService: ICommentService,
+        @inject(TYPES.UserRepository) private userService: IUserRepository,
+        @inject(TYPES.RequestRemasService) private requestRemasService: IRequestRemasService,
+
         @inject(TYPES.ProducerDispatcher) private dispatcher: EventDispatcher
     ) { }
 
@@ -40,6 +46,7 @@ class ProfileService implements IProfileService {
             ramadhan: data.ramadhan ?? null,
             idul_adha: data.idul_adha ?? null,
             roles: data.roles,
+            is_active: data.is_active,
             user_uuid: data.user_uuid ?? '',
             uuid: data.uuid ?? '',
             slug: slugify(data.slug) + uuidv4(),
@@ -56,12 +63,13 @@ class ProfileService implements IProfileService {
     }
 
     async update(data: UpdateProfileRequest, user: IUser): Promise<{ success: true }> {
-        console.log(data, 'ini data')
-        console.log(user, 'ini user')
+        console.log(user)
         const searchProfile = await this.profileReopsitory.findOne(user.uuid)
         const postService = await this.postService.findPostWithAuth(user)
         const commentRemas = await this.commentRemasService.findOne(user.uuid)
         const commentService = await this.commentService.findOne(user.uuid)
+        const userService = await this.userService.findOneByUuid(user.uuid)
+        const findrequestRemas = await this.requestRemasService.findWithUserUuid(user)
 
         if (!searchProfile) throw new ErrorNotFound('Data not found', '@Service Update profile')
         let slugi = ''
@@ -94,27 +102,49 @@ class ProfileService implements IProfileService {
             uuid: searchProfile.uuid ?? '',
             deleted_at: null
         })
+        if (postService.data.length > 1) {
+            if (postService.data[0].created_by.name !== data.nickname || postService.data[0].image !== data.image) {
+                await this.postService.chainUpdateFromProfile(profileEntity)
+            }
 
-        if (postService.data[0].created_by.name !== data.nickname || postService.data[0].image !== data.image) {
-            await this.postService.chainUpdateFromProfile(profileEntity)
+        }
+        if (commentRemas) {
+            if (commentRemas?.created_by.name !== data.nickname || commentRemas.created_by.image !== data.image) {
+                await this.commentRemasService.chainUpdateFromProfile(profileEntity)
+            }
+
+        }
+        if (commentService) {
+            console.log(commentService, 'in coment')
+            if (commentService.created_by.name !== data.nickname || commentService.created_by.image !== data.image) {
+                await this.commentService.chainUpdateFromProfile(profileEntity)
+            }
         }
 
-        if (commentRemas?.created_by.name !== data.nickname || commentRemas.created_by.image !== data.image) {
-            await this.commentRemasService.chainUpdateFromProfile(profileEntity)
+        if (userService) {
+
+            if (userService.name !== data.nickname) {
+                console.log('masuk')
+                await this.userService.chainUpdateFromProfile(data.nickname ?? '', user.uuid)
+            }
         }
 
-        if (commentService?.created_by.name !== data.nickname || commentService.created_by.image !== data.image) {
-            await this.commentService.chainUpdateFromProfile(profileEntity)
+        if (findrequestRemas) {
+            if (findrequestRemas.created_by.name !== data.nickname || findrequestRemas.created_by.image !== data.image) {
+                await this.requestRemasService.chainUpdateFromProfile(profileEntity)
+            }
         }
+
 
         await this.profileReopsitory.update(profileEntity)
 
         return { success: true }
     }
 
-    async findOneBySlug(slug: string): Promise<{ data: ProfileEntity | null, likes: string[] }> {
+    async findOneBySlug(slug: string): Promise<{ data: ProfileEntity | null, comment: CommentRemasEntity[], likes: string[] }> {
         const result = await this.profileReopsitory.findOneBySlug(slug)
-        const likes = await this.remasService.find(result?.uuid ?? '')
+        const likes = await this.remasService.find(result?.user_uuid ?? '')
+        const commentEntity = await this.commentRemasService.find(result?.user_uuid ?? '')
         const stringLikes = []
         for (let i = 0; i < likes.data.length; i++) {
             stringLikes.push(likes.data[i].user_uuid)
@@ -122,6 +152,7 @@ class ProfileService implements IProfileService {
         return {
             data: result,
             likes: stringLikes,
+            comment: commentEntity.data,
         }
     }
 

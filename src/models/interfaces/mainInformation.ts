@@ -30,6 +30,7 @@ export interface IProfile extends Document {
     main_information: IMainInformation
     ramadhan: IZakat | null
     idul_adha: IIdulAdha | null
+    is_active?: boolean
     roles: string[]
     deleted_at: Date | null
 }

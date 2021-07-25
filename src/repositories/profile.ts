@@ -15,6 +15,7 @@ class ProfileRepository implements IProfileRepository {
             uuid: data.uuid,
             user_uuid: data.user_uuid,
             main_information: data.main_information,
+            is_active: data.is_active,
             ramadhan: data.ramadhan,
             roles: data.roles,
             idul_adha: data.idul_adha
@@ -27,6 +28,7 @@ class ProfileRepository implements IProfileRepository {
 
         const result = await ProfileModel.findOne({
             user_uuid: uuid,
+            is_active: true
         })
 
         return result ? new ProfileEntity(result) : null
@@ -36,13 +38,14 @@ class ProfileRepository implements IProfileRepository {
 
         const result = await ProfileModel.findOne({
             slug: slug,
-
+            is_active: true,
         })
 
         return result ? new ProfileEntity(result) : null
     }
 
     async update(data: ProfileEntity): Promise<ProfileEntity> {
+        console.log(data, 'repo')
         const result = await ProfileModel.updateOne({
             uuid: data.uuid, user_uuid: data.user_uuid,
         }, {

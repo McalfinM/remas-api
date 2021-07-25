@@ -10,24 +10,27 @@ import CreateCommentRemasRequest from "../request/comment/createCommentRemasRequ
 import CommentRemasEntity from "../entities/commentRemas";
 import { ICommentRemasRepository } from "../repositories/interfaces/commentRemas";
 import ProfileEntity from "../entities/profile";
+import { IUserService } from "./interfaces/user";
+import { IUserRepository } from "../repositories/interfaces/user";
 
 @injectable()
 class CommentRemasService implements ICommentRemasService {
 
     constructor(
         @inject(TYPES.CommentRemasRepository) private commentRepository: ICommentRemasRepository,
+        @inject(TYPES.UserRepository) private userService: IUserRepository,
         @inject(TYPES.ProducerDispatcher) private dispatcher: EventDispatcher,
     ) { }
 
     async create(data: CreateCommentRemasRequest, user: IUser): Promise<{ success: true }> {
-        console.log(user, 'ini user')
+        const userEntity = await this.userService.findOne(user.uuid)
         const commentEntity = new CommentRemasEntity({
             uuid: uuidv4(),
             created_by: {
                 name: user.name,
                 uuid: user.uuid,
             },
-            remas_uuid: data.remas_uuid,
+            remas_uuid: data.post_uuid,
             ip_address: data.ip_address ?? null,
             comment: data.comment,
             created_at: new Date,

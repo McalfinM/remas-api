@@ -28,6 +28,7 @@ export interface IProfile {
     slug: string
     main_information: IMainInformation | null
     ramadhan: IZakat | null
+    is_active?: boolean
     idul_adha: IIdulAdha | null
     roles?: string[]
     deleted_at: Date | null

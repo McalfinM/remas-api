@@ -7,6 +7,7 @@ const CommentRemasSchema: Schema = new Schema(
         user_uuid: { type: String },
         comment: { type: String },
         remas_uuid: { type: String },
+        created_by: { type: Object },
         ip_address: { type: String },
         created_at: { type: Date },
         deleted_at: { type: Date },

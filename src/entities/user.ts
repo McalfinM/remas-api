@@ -7,6 +7,7 @@ export interface IUserEntitiy {
     email: string | null
     password: string
     roles: string[]
+    is_active?: boolean
     created_at: Date | null
     updated_at: Date | null
     deleted_at: Date | null
@@ -19,6 +20,7 @@ class UserEntity extends BaseEntity {
     protected _email: string | null
     protected _password: string
     protected _roles: string[]
+    protected _is_active?: boolean
     protected _created_at: Date | null
     protected _updated_at: Date | null
     protected _deleted_at: Date | null
@@ -31,6 +33,7 @@ class UserEntity extends BaseEntity {
         this._email = params.email
         this._password = params.password
         this._roles = params.roles
+        this._is_active = params.is_active
         this._created_at = params.created_at
         this._updated_at = params.updated_at
         this._deleted_at = params.deleted_at
@@ -73,6 +76,14 @@ class UserEntity extends BaseEntity {
 
     set password(password: string) {
         this._password = password
+    }
+
+    get is_active(): boolean | undefined {
+        return this._is_active
+    }
+
+    set is_active(is_active: boolean | undefined) {
+        this._is_active = is_active
     }
 
     get created_at(): Date | null {

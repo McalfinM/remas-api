@@ -28,7 +28,7 @@ class CommentRepository implements ICommentRepository {
     async findOne(uuid: string): Promise<CommentEntity | null> {
 
         const result = await CommentModel.findOne({
-            user_uuid: uuid,
+            "created_by.uuid": uuid,
         })
 
         return result ? new CommentEntity(result) : null

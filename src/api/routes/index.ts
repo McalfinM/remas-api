@@ -19,7 +19,10 @@ class IndexRouter {
     @inject(TYPES.CategoryRouter) private categoryRouter: IRouter,
     @inject(TYPES.RemasLikeRouter) private remasLikeRouter: IRouter,
     @inject(TYPES.CommentRemasRouter) private commentRemasRouter: IRouter,
-    @inject(TYPES.RegistrationMemberRemasRouter) private registrationMemberRemasRouter: IRouter
+    @inject(TYPES.RegistrationMemberRemasRouter) private registrationMemberRemasRouter: IRouter,
+    @inject(TYPES.EventRouter) private EventRouter: IRouter,
+    @inject(TYPES.RequestRemasRouter) private requestRemasRouter: IRouter,
+    @inject(TYPES.TokenRouter) private tokenRouter: IRouter
 
   ) {
     this.router = Router();
@@ -37,6 +40,9 @@ class IndexRouter {
     this.router.use("/api/v1/remas-likes", this.remasLikeRouter.router)
     this.router.use("/api/v1/remas-comments", this.commentRemasRouter.router)
     this.router.use("/api/v1/remas-member-register", this.registrationMemberRemasRouter.router)
+    this.router.use("/api/v1/events", this.EventRouter.router)
+    this.router.use("/api/v1/request-remas", this.requestRemasRouter.router)
+    this.router.use("/api/v1/token", this.tokenRouter.router)
 
     return this
   }

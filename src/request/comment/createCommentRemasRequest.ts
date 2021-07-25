@@ -2,23 +2,23 @@
 
 
 class CreateCommentRemasRequest {
-    protected _remas_uuid: string
+    protected _post_uuid: string
     protected _comment: string
     protected _ip_address: string
 
 
     constructor(body: {
-        remas_uuid: string
+        post_uuid: string
         comment: string
         ip_address: string
 
     }) {
-        this._remas_uuid = body.remas_uuid
+        this._post_uuid = body.post_uuid
         this._comment = body.comment
         this._ip_address = body.ip_address
     }
-    get remas_uuid(): string {
-        return this._remas_uuid
+    get post_uuid(): string {
+        return this._post_uuid
     }
     get comment(): string {
         return this._comment

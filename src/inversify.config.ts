@@ -77,6 +77,30 @@ import RegistrationMemberRemasRepository from "./repositories/registrationMember
 import RegistrationMemberRemasService from "./services/registrationMemberRemas";
 import { IRegistrationMemberRemasController } from "./api/controllers/interfaces/registrationMemberRemas";
 import RegistrationMemberRemasController from "./api/controllers/registrationMembeREmasController";
+import EventRouter from "./api/routes/event";
+import { IEventController } from "./api/controllers/interfaces/event";
+import { IEventService } from "./services/interfaces/event";
+import { IEventRepository } from "./repositories/interfaces/event";
+import EventController from "./api/controllers/event";
+import EventRepository from "./repositories/event";
+import EventService from "./services/event";
+import RequestRemasRouter from "./api/routes/requestRemas";
+import { IRequestRemasController } from "./api/controllers/interfaces/requestRemas";
+import RequestRemasController from "./api/controllers/requestRemas";
+import { IRequestRemasService } from "./services/interfaces/requestRemas";
+import RequestRemasService from "./services/requestRemas";
+import { IRequestRemasRepository } from "./repositories/interfaces/requestRemas";
+import RequestRemasRepository from "./repositories/requestRemas";
+import UserRouter from "./api/routes/user";
+import { ITokenService } from "./services/interfaces/token";
+import TokenService from "./services/token";
+import { ITokenRepository } from "./repositories/interfaces/token";
+import TokenRepository from "./repositories/token";
+import { IEmailService } from "./services/interfaces/email";
+import EmailService from "./services/email";
+import TokenRouter from "./api/routes/token";
+import { ITokenController } from "./api/controllers/interfaces/token";
+import TokenController from "./api/controllers/token";
 
 
 decorate(injectable(), BaseRouter);
@@ -93,7 +117,7 @@ container.bind<IRouter>(TYPES.IndexRouter).to(IndexRouter).inSingletonScope()
 container.bind<IRouter>(TYPES.AuthRouter).to(AuthRouter).inSingletonScope()
 container.bind<IAuthController>(TYPES.AuthController).to(AuthController).inSingletonScope()
 
-container.bind<IRouter>(TYPES.UserRouter).to(PostRouter).inSingletonScope()
+container.bind<IRouter>(TYPES.UserRouter).to(UserRouter).inSingletonScope()
 container.bind<IUserController>(TYPES.UserController).to(UserController).inSingletonScope()
 container.bind<IUserService>(TYPES.UserService).to(UserService).inSingletonScope()
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope()
@@ -137,6 +161,23 @@ container.bind<IRouter>(TYPES.RegistrationMemberRemasRouter).to(RegistrationMemb
 container.bind<IRegistrationMemberRemasController>(TYPES.RegistrationMemberRemasController).to(RegistrationMemberRemasController).inSingletonScope()
 container.bind<IRegistrationMemberRemasService>(TYPES.RegistrationMemberRemasService).to(RegistrationMemberRemasService).inSingletonScope()
 container.bind<IRegistrationMemberRemasRepository>(TYPES.RegistrationMemberRemasRepository).to(RegistrationMemberRemasRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.EventRouter).to(EventRouter).inSingletonScope()
+container.bind<IEventController>(TYPES.EventController).to(EventController).inSingletonScope()
+container.bind<IEventService>(TYPES.EventService).to(EventService).inSingletonScope()
+container.bind<IEventRepository>(TYPES.EventRepository).to(EventRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.RequestRemasRouter).to(RequestRemasRouter).inSingletonScope()
+container.bind<IRequestRemasController>(TYPES.RequestRemasController).to(RequestRemasController).inSingletonScope()
+container.bind<IRequestRemasService>(TYPES.RequestRemasService).to(RequestRemasService).inSingletonScope()
+container.bind<IRequestRemasRepository>(TYPES.RequestRemasRepository).to(RequestRemasRepository).inSingletonScope()
+
+container.bind<IRouter>(TYPES.TokenRouter).to(TokenRouter).inSingletonScope()
+container.bind<ITokenController>(TYPES.TokenController).to(TokenController).inSingletonScope()
+container.bind<ITokenService>(TYPES.TokenService).to(TokenService).inSingletonScope()
+container.bind<ITokenRepository>(TYPES.TokenRepository).to(TokenRepository).inSingletonScope()
+
+container.bind<IEmailService>(TYPES.EmailService).to(EmailService).inSingletonScope()
 
 container.bind<EventDispatcher>(TYPES.ProducerDispatcher).to(ProducerDispatcher).inSingletonScope()
 container.bind<EventDispatcher>(TYPES.ConsumerDispatcher).to(ConsumerDispatcher).inSingletonScope()
