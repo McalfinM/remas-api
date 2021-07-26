@@ -44,7 +44,7 @@ let EventController = class EventController {
         const { params: { uuid } } = req;
         return this.eventService.findOne(uuid)
             .then((result) => {
-            return httpResponse_1.default.success(req, res, result);
+            return httpResponse_1.default.success(req, res, result.data?.toDetailData());
         })
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
@@ -75,7 +75,7 @@ let EventController = class EventController {
         return this.eventService.findPostByUuid(uuid, user)
             .then((result) => {
             let obj = {};
-            return httpResponse_1.default.success(req, res, result?.toJson());
+            return httpResponse_1.default.success(req, res, result?.toDetailData());
         })
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
