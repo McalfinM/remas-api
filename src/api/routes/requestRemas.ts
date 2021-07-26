@@ -25,9 +25,10 @@ class RequestRemasRouter extends BaseRouter {
     routes(): IRouter {
         // call controllers here
         this.router.post('/', authenticate, this.requestRemasController.create)
+        this.router.get('/', authenticate, this.requestRemasController.find)
         this.router.get('/my-request', authenticate, this.requestRemasController.findWithUserUuid)
         this.router.delete('/:uuid', authenticate, this.requestRemasController.delete)
-        this.router.get('/:uuid', this.requestRemasController.findOne)
+        this.router.get('/:uuid', authenticate, this.requestRemasController.findOne)
 
         return this
     }

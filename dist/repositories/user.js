@@ -14,7 +14,6 @@ const user_1 = __importDefault(require("../entities/user"));
 const user_2 = __importDefault(require("../models/user"));
 let UserRepository = class UserRepository {
     async create(data) {
-        console.log(data, 'ini data');
         const result = await user_2.default.create({
             uuid: data.uuid,
             name: data.name,
@@ -60,6 +59,12 @@ let UserRepository = class UserRepository {
         console.log(name, uuid);
         const response = await user_2.default.updateOne({ uuid: uuid }, {
             name: name
+        });
+        return { success: true };
+    }
+    async updateIsActiveTrue(user_uuid, is_active) {
+        const response = await user_2.default.updateOne({ uuid: user_uuid }, {
+            is_active: is_active
         });
         return { success: true };
     }

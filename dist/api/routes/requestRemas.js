@@ -30,9 +30,10 @@ let RequestRemasRouter = class RequestRemasRouter extends baseRouter_1.default {
     routes() {
         // call controllers here
         this.router.post('/', auth_1.authenticate, this.requestRemasController.create);
+        this.router.get('/', auth_1.authenticate, this.requestRemasController.find);
         this.router.get('/my-request', auth_1.authenticate, this.requestRemasController.findWithUserUuid);
         this.router.delete('/:uuid', auth_1.authenticate, this.requestRemasController.delete);
-        this.router.get('/:uuid', this.requestRemasController.findOne);
+        this.router.get('/:uuid', auth_1.authenticate, this.requestRemasController.findOne);
         return this;
     }
 };

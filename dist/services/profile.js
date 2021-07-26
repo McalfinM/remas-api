@@ -25,15 +25,17 @@ let ProfileService = class ProfileService {
     postService;
     remasService;
     commentRemasService;
+    registerMemberRemas;
     commentService;
     userService;
     requestRemasService;
     dispatcher;
-    constructor(profileReopsitory, postService, remasService, commentRemasService, commentService, userService, requestRemasService, dispatcher) {
+    constructor(profileReopsitory, postService, remasService, commentRemasService, registerMemberRemas, commentService, userService, requestRemasService, dispatcher) {
         this.profileReopsitory = profileReopsitory;
         this.postService = postService;
         this.remasService = remasService;
         this.commentRemasService = commentRemasService;
+        this.registerMemberRemas = registerMemberRemas;
         this.commentService = commentService;
         this.userService = userService;
         this.requestRemasService = requestRemasService;
@@ -60,13 +62,13 @@ let ProfileService = class ProfileService {
         return result;
     }
     async update(data, user) {
-        console.log(user);
         const searchProfile = await this.profileReopsitory.findOne(user.uuid);
         const postService = await this.postService.findPostWithAuth(user);
         const commentRemas = await this.commentRemasService.findOne(user.uuid);
         const commentService = await this.commentService.findOne(user.uuid);
         const userService = await this.userService.findOneByUuid(user.uuid);
         const findrequestRemas = await this.requestRemasService.findWithUserUuid(user);
+        const findRegistrationMember = await this.registerMemberRemas.findOneUserUuid(user.uuid);
         if (!searchProfile)
             throw new errors_1.ErrorNotFound('Data not found', '@Service Update profile');
         let slugi = '';
@@ -99,8 +101,8 @@ let ProfileService = class ProfileService {
             uuid: searchProfile.uuid ?? '',
             deleted_at: null
         });
-        if (postService.data.length > 1) {
-            if (postService.data[0].created_by.name !== data.nickname || postService.data[0].image !== data.image) {
+        if (postService.data.length > 0) {
+            if (postService.data[0].created_by.name !== data.nickname || postService.data[0].created_by.image !== data.image) {
                 await this.postService.chainUpdateFromProfile(profileEntity);
             }
         }
@@ -110,20 +112,23 @@ let ProfileService = class ProfileService {
             }
         }
         if (commentService) {
-            console.log(commentService, 'in coment');
             if (commentService.created_by.name !== data.nickname || commentService.created_by.image !== data.image) {
                 await this.commentService.chainUpdateFromProfile(profileEntity);
             }
         }
         if (userService) {
             if (userService.name !== data.nickname) {
-                console.log('masuk');
                 await this.userService.chainUpdateFromProfile(data.nickname ?? '', user.uuid);
             }
         }
         if (findrequestRemas) {
             if (findrequestRemas.created_by.name !== data.nickname || findrequestRemas.created_by.image !== data.image) {
                 await this.requestRemasService.chainUpdateFromProfile(profileEntity);
+            }
+        }
+        if (findRegistrationMember) {
+            if (findRegistrationMember.created_by?.name !== data.nickname || findRegistrationMember.created_by.image !== data.image) {
+                await this.registerMemberRemas.chainUpdateFromProfile(profileEntity);
             }
         }
         await this.profileReopsitory.update(profileEntity);
@@ -146,6 +151,10 @@ let ProfileService = class ProfileService {
     async index(data) {
         return await this.profileReopsitory.index(new profileSpecification_1.default(data));
     }
+    async updateIsActiveTrue(user_uuid, is_active) {
+        await this.profileReopsitory.updateIsActiveTrue(user_uuid, is_active);
+        return { success: true };
+    }
 };
 ProfileService = __decorate([
     inversify_1.injectable(),
@@ -153,9 +162,10 @@ ProfileService = __decorate([
     __param(1, inversify_1.inject(types_1.TYPES.PostRepository)),
     __param(2, inversify_1.inject(types_1.TYPES.RemasLikeService)),
     __param(3, inversify_1.inject(types_1.TYPES.CommentRemasService)),
-    __param(4, inversify_1.inject(types_1.TYPES.CommentService)),
-    __param(5, inversify_1.inject(types_1.TYPES.UserRepository)),
-    __param(6, inversify_1.inject(types_1.TYPES.RequestRemasService)),
-    __param(7, inversify_1.inject(types_1.TYPES.ProducerDispatcher))
+    __param(4, inversify_1.inject(types_1.TYPES.RegistrationMemberRemasRepository)),
+    __param(5, inversify_1.inject(types_1.TYPES.CommentService)),
+    __param(6, inversify_1.inject(types_1.TYPES.UserRepository)),
+    __param(7, inversify_1.inject(types_1.TYPES.RequestRemasService)),
+    __param(8, inversify_1.inject(types_1.TYPES.ProducerDispatcher))
 ], ProfileService);
 exports.default = ProfileService;

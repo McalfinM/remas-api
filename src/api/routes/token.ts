@@ -24,7 +24,7 @@ class TokenRouter extends BaseRouter {
 
     routes(): IRouter {
         // call controllers here
-        this.router.put('/:uuid/verification', authenticate, this.tokenController.update)
+        this.router.put('/:token/verification', this.tokenController.update)
         this.router.get('/:uuid', authenticate, this.tokenController.findOne)
         this.router.delete('/:uuid', authenticate, this.tokenController.findOneWithToken)
 

@@ -47,12 +47,12 @@ class PostService implements IPostService {
             created_by: {
                 uuid: user.uuid,
                 name: user.name,
-                image: profile?.main_information?.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+                image: profile?.main_information?.image ?? 'https://res.cloudinary.com/dcyohew0h/image/upload/v1626325005/posts/roxlkp46kp0sk9oqb3jg.png',
                 slug: profile?.slug ?? ''
             },
             created_at: new Date,
             deleted_at: null,
-            image: data.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+            image: data.image ?? 'https://res.cloudinary.com/dcyohew0h/image/upload/v1626325005/posts/roxlkp46kp0sk9oqb3jg.png',
             slug: slugify(data.title ?? '') + uuidv4(),
             title: data.title,
             updated_at: new Date
@@ -95,9 +95,7 @@ class PostService implements IPostService {
     }
 
     async update(uuid: string, data: UpdatePostRequest, user: IUser): Promise<{ success: true }> {
-        console.log(data, 'ini image')
         const searchPost = await this.postRepository.findPostByUuid(uuid, user)
-        console.log(searchPost)
         if (!searchPost) throw new ErrorNotFound('Data not found', '@Service update post')
         let slugi = searchPost.title
         const category = await this.categoryService.findOne(data.category)
@@ -105,7 +103,6 @@ class PostService implements IPostService {
             slugi = slugify(data.title ?? '') + uuidv4()
         }
         if (searchPost.cloudinary_id !== data.cloudinary_id) {
-            console.log('masuk')
             await cloud.uploader.destroy('posts/' + searchPost.cloudinary_id)
         }
         const postEntity = new PostEntity({
@@ -130,7 +127,6 @@ class PostService implements IPostService {
     }
 
     async delete(uuid: string, user: IUser): Promise<{ success: true }> {
-        console.log(uuid, user, 'masuk')
         const searchPost = await this.postRepository.delete(uuid, user)
         if (!searchPost) throw new ErrorNotFound('Data not found', '@Delete Service Post')
 

@@ -14,7 +14,6 @@ const registrationMemberRemas_1 = __importDefault(require("../models/registratio
 const registrationMemberRemas_2 = __importDefault(require("../entities/registrationMemberRemas"));
 let RegistrationMemberRemasRepository = class RegistrationMemberRemasRepository {
     async create(data) {
-        console.log(data, 'ini repo');
         const result = await registrationMemberRemas_1.default.create({
             uuid: data.uuid,
             user_uuid: data.user_uuid,
@@ -24,6 +23,7 @@ let RegistrationMemberRemasRepository = class RegistrationMemberRemasRepository 
             handphone: data.handphone,
             image: data.image,
             created_at: data.created_at,
+            description: data.description,
             updated_at: data.updated_at,
             created_by: data.created_by ?? null,
             email: data.email
@@ -36,6 +36,23 @@ let RegistrationMemberRemasRepository = class RegistrationMemberRemasRepository 
             deleted_at: null
         });
         return result ? new registrationMemberRemas_2.default(result) : null;
+    }
+    async findOneUserUuid(uuid) {
+        const result = await registrationMemberRemas_1.default.findOne({
+            "created_by.uuid": uuid,
+        });
+        return result ? new registrationMemberRemas_2.default(result) : null;
+    }
+    async chainUpdateFromProfile(data) {
+        await registrationMemberRemas_1.default.updateMany({ "created_by.uuid": data.user_uuid }, {
+            created_by: {
+                name: data.main_information?.nickname ?? '',
+                uuid: data.user_uuid ?? "",
+                image: data.main_information?.image,
+                slug: data.slug
+            }
+        });
+        return { success: true };
     }
     async update(data) {
         const result = await registrationMemberRemas_1.default.updateOne({

@@ -45,7 +45,6 @@ class ProfileRepository implements IProfileRepository {
     }
 
     async update(data: ProfileEntity): Promise<ProfileEntity> {
-        console.log(data, 'repo')
         const result = await ProfileModel.updateOne({
             uuid: data.uuid, user_uuid: data.user_uuid,
         }, {
@@ -107,7 +106,14 @@ class ProfileRepository implements IProfileRepository {
             });
     }
 
+    async updateIsActiveTrue(user_uuid: string, is_active: boolean): Promise<{ success: true }> {
+        const result = await ProfileModel.updateOne({
+            user_uuid: user_uuid,
 
+        }, { is_active: is_active })
+
+        return { success: true }
+    }
 
 }
 

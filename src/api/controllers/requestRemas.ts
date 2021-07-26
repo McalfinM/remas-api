@@ -29,8 +29,18 @@ class RequestRemasController implements IRequestRemasController {
 
     findOne(req: Request, res: Response): Response | Promise<Response> {
 
-        const { body: { uuid } } = req
+        const { params: { uuid } } = req
         return this.requestRemasService.findOne(uuid)
+            .then((result) => {
+                return HttpResponse.success(req, res, result);
+            })
+            .catch((err) => HttpErrorHandler(err, req, res));
+    }
+
+    find(req: Request, res: Response): Response | Promise<Response> {
+
+        let user = req.user
+        return this.requestRemasService.find(user)
             .then((result) => {
                 return HttpResponse.success(req, res, result);
             })

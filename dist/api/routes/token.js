@@ -29,7 +29,7 @@ let TokenRouter = class TokenRouter extends baseRouter_1.default {
     }
     routes() {
         // call controllers here
-        this.router.put('/:uuid/verification', auth_1.authenticate, this.tokenController.update);
+        this.router.put('/:token/verification', this.tokenController.update);
         this.router.get('/:uuid', auth_1.authenticate, this.tokenController.findOne);
         this.router.delete('/:uuid', auth_1.authenticate, this.tokenController.findOneWithToken);
         return this;

@@ -22,6 +22,7 @@ let RequestRemasRepository = class RequestRemasRepository {
             full_name: data.full_name,
             handphone: data.handphone,
             image: data.image,
+            status: data.status,
             created_at: new Date,
             updated_at: new Date,
             deleted_at: null
@@ -35,8 +36,6 @@ let RequestRemasRepository = class RequestRemasRepository {
         return result ? new requestRemas_1.default(result) : null;
     }
     async delete(uuid, user) {
-        console.log(uuid, 'ini uuid repo');
-        console.log(user);
         const result = await requestRemas_2.default.updateOne({
             uuid: uuid,
             "created_by.uuid": user.uuid
@@ -54,8 +53,24 @@ let RequestRemasRepository = class RequestRemasRepository {
         });
         return { success: true };
     }
-    async find(uuid) {
-        return await requestRemas_2.default.find({ uuid: uuid, deleted_at: null })
+    async update(data) {
+        const result = await requestRemas_2.default.updateOne({ uuid: data.uuid }, {
+            uuid: data.uuid,
+            address: data.address,
+            created_by: data.created_by,
+            description: data.description,
+            full_name: data.full_name,
+            handphone: data.handphone,
+            image: data.image,
+            status: data.status,
+            created_at: new Date,
+            updated_at: new Date,
+            deleted_at: null
+        });
+        return { success: true };
+    }
+    async find() {
+        return await requestRemas_2.default.find({ deleted_at: null })
             .then((data) => {
             return {
                 data: data.map(result => {

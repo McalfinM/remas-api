@@ -12,12 +12,14 @@ import { v4 as uuid } from 'uuid'
 import { IUserService } from "./interfaces/user";
 import { ErrorNotFound } from "../helpers/errors";
 import { IUserRepository } from "../repositories/interfaces/user";
+import { IProfileService } from "./interfaces/profile";
 
 @injectable()
 class TokenService implements ITokenService {
     constructor(
         @inject(TYPES.TokenRepository) private tokenRepository: ITokenRepository,
         @inject(TYPES.UserRepository) private userService: IUserRepository,
+        @inject(TYPES.ProfileService) private profileService: IProfileService,
         @inject(TYPES.ProducerDispatcher) private dispatcher: EventDispatcher,
     ) { }
     async create(data: TokenEntity): Promise<TokenEntity> {
@@ -63,6 +65,8 @@ class TokenService implements ITokenService {
             updated_at: new Date
         })
         const result = await this.tokenRepository.update(tokenEntity, user.uuid ?? '')
+        await this.userService.updateIsActiveTrue(findToken.user_uuid, true)
+        await this.profileService.updateIsActiveTrue(findToken.user_uuid, true)
         return result
     }
     async findOneWithToken(token: string): Promise<TokenEntity | null> {
@@ -71,7 +75,6 @@ class TokenService implements ITokenService {
         return result ? new TokenEntity(result) : null
     }
     async chainUpdateFromProfile(name: string, uuid: string): Promise<{ success: true }> {
-        console.log(name, uuid)
         const response = await this.tokenRepository.chainUpdateFromProfile(name, uuid)
         return { success: true }
     }

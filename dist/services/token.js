@@ -21,10 +21,12 @@ const errors_1 = require("../helpers/errors");
 let TokenService = class TokenService {
     tokenRepository;
     userService;
+    profileService;
     dispatcher;
-    constructor(tokenRepository, userService, dispatcher) {
+    constructor(tokenRepository, userService, profileService, dispatcher) {
         this.tokenRepository = tokenRepository;
         this.userService = userService;
+        this.profileService = profileService;
         this.dispatcher = dispatcher;
     }
     async create(data) {
@@ -67,6 +69,8 @@ let TokenService = class TokenService {
             updated_at: new Date
         });
         const result = await this.tokenRepository.update(tokenEntity, user.uuid ?? '');
+        await this.userService.updateIsActiveTrue(findToken.user_uuid, true);
+        await this.profileService.updateIsActiveTrue(findToken.user_uuid, true);
         return result;
     }
     async findOneWithToken(token) {
@@ -74,7 +78,6 @@ let TokenService = class TokenService {
         return result ? new token_1.default(result) : null;
     }
     async chainUpdateFromProfile(name, uuid) {
-        console.log(name, uuid);
         const response = await this.tokenRepository.chainUpdateFromProfile(name, uuid);
         return { success: true };
     }
@@ -83,6 +86,7 @@ TokenService = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(types_1.TYPES.TokenRepository)),
     __param(1, inversify_1.inject(types_1.TYPES.UserRepository)),
-    __param(2, inversify_1.inject(types_1.TYPES.ProducerDispatcher))
+    __param(2, inversify_1.inject(types_1.TYPES.ProfileService)),
+    __param(3, inversify_1.inject(types_1.TYPES.ProducerDispatcher))
 ], TokenService);
 exports.default = TokenService;

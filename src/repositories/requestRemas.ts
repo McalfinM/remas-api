@@ -19,6 +19,7 @@ class RequestRemasRepository implements IRequestRemasRepository {
             full_name: data.full_name,
             handphone: data.handphone,
             image: data.image,
+            status: data.status,
             created_at: new Date,
             updated_at: new Date,
             deleted_at: null
@@ -39,9 +40,6 @@ class RequestRemasRepository implements IRequestRemasRepository {
 
 
     async delete(uuid: string, user: IUser): Promise<{ success: true }> {
-        console.log(uuid, 'ini uuid repo')
-        console.log(user)
-
         const result = await RequestRemasModel.updateOne({
             uuid: uuid,
             "created_by.uuid": user.uuid
@@ -66,9 +64,27 @@ class RequestRemasRepository implements IRequestRemasRepository {
         return { success: true }
     }
 
-    async find(uuid: string): Promise<{ data: RequestRemasEntity[] }> {
+    async update(data: RequestRemasEntity): Promise<{ success: true }> {
+        const result = await RequestRemasModel.updateOne({ uuid: data.uuid }, {
+            uuid: data.uuid,
+            address: data.address,
+            created_by: data.created_by,
+            description: data.description,
+            full_name: data.full_name,
+            handphone: data.handphone,
+            image: data.image,
+            status: data.status,
+            created_at: new Date,
+            updated_at: new Date,
+            deleted_at: null
+        })
 
-        return await RequestRemasModel.find({ uuid: uuid, deleted_at: null })
+        return { success: true }
+    }
+
+    async find(): Promise<{ data: RequestRemasEntity[] }> {
+
+        return await RequestRemasModel.find({ deleted_at: null })
             .then((data) => {
                 return {
                     data: data.map(result => {

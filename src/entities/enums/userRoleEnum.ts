@@ -1,5 +1,5 @@
 export enum UserRole {
-  SUPER_ADMIN = 'super_admin',
+  ADMIN = 'admin',
   MEMBER = 'member',
-  PREMIUM = 'premium',
+  REMAJA_MASJID = 'remaja_masjid',
 }

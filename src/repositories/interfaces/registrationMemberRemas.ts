@@ -12,4 +12,6 @@ export interface IRegistrationMemberRemasRepository {
     update(data: RegistrationMemberRemasEntity): Promise<RegistrationMemberRemasEntity>
     index(user_uuid: string): Promise<{ data: RegistrationMemberRemasEntity[] }>
     delete(uuid: string): Promise<{ success: true }>
+    findOneUserUuid(uuid: string): Promise<RegistrationMemberRemasEntity | null>
+    chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }>
 }

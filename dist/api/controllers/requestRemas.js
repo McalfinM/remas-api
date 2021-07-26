@@ -32,8 +32,16 @@ let RequestRemasController = class RequestRemasController {
             .catch((err) => errors_1.HttpErrorHandler(err, req, res));
     }
     findOne(req, res) {
-        const { body: { uuid } } = req;
+        const { params: { uuid } } = req;
         return this.requestRemasService.findOne(uuid)
+            .then((result) => {
+            return httpResponse_1.default.success(req, res, result);
+        })
+            .catch((err) => errors_1.HttpErrorHandler(err, req, res));
+    }
+    find(req, res) {
+        let user = req.user;
+        return this.requestRemasService.find(user)
             .then((result) => {
             return httpResponse_1.default.success(req, res, result);
         })

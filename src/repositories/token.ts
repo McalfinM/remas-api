@@ -9,7 +9,6 @@ import TokenModel from "../models/token";
 @injectable()
 class TokenRepository implements ITokenRepository {
     async create(data: TokenEntity): Promise<TokenEntity> {
-        console.log(data, 'ini data')
         const result = await TokenModel.create({
             uuid: data.uuid,
             token: data.token,
@@ -56,7 +55,7 @@ class TokenRepository implements ITokenRepository {
     async update(data: TokenEntity, user_uuid: string): Promise<TokenEntity> {
 
         const result = await TokenModel.updateOne({ user_uuid: user_uuid }, {
-            data
+            revoked: data.revoked
         })
         return data
     }
@@ -69,7 +68,6 @@ class TokenRepository implements ITokenRepository {
         return result ? new TokenEntity(result) : null
     }
     async chainUpdateFromProfile(name: string, uuid: string): Promise<{ success: true }> {
-        console.log(name, uuid)
         const response = await TokenModel.updateOne({ uuid: uuid }, {
             name: name
         })

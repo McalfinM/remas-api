@@ -40,7 +40,6 @@ let ProfileRepository = class ProfileRepository {
         return result ? new profile_1.default(result) : null;
     }
     async update(data) {
-        console.log(data, 'repo');
         const result = await profile_2.default.updateOne({
             uuid: data.uuid, user_uuid: data.user_uuid,
         }, {
@@ -89,6 +88,12 @@ let ProfileRepository = class ProfileRepository {
             .catch((err) => {
             return err;
         });
+    }
+    async updateIsActiveTrue(user_uuid, is_active) {
+        const result = await profile_2.default.updateOne({
+            user_uuid: user_uuid,
+        }, { is_active: is_active });
+        return { success: true };
     }
 };
 ProfileRepository = __decorate([

@@ -4,16 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { events } from "../events/events";
 import { EventDispatcher } from "event-dispatch";
 import { IProfileService } from "./interfaces/profile";
-import ProfileEntity from "../entities/profile";
-import { IProfileRepository } from "../repositories/interfaces/profile";
-import GetProfileRequest from "../request/profile/getProfileRequest";
-import GetProfileSpecification from "../repositories/specifications/profileSpecification"
-import slugify from "slugify";
 import { IUser } from "../models/interfaces/user";
-import CreateUserRequest from "../request/user/createUserRequest";
-import UpdateProfileRequest from "../request/profile/updateProfileRequest";
 import { ErrorNotFound } from "../helpers/errors";
-import { cloud } from "../helpers/cloudinary";
 import CraeteRegistrationMemberRemas from "../request/registrationMemberRemas/createRegistrationMember";
 import { IRegistrationMemberRemasService } from "./interfaces/registrationMemberRemas";
 import RegistrationMemberRemasEntity from "../entities/registrationMemberRemas";

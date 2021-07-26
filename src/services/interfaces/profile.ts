@@ -13,4 +13,5 @@ export interface IProfileService {
     index(request: GetProfileRequest): Promise<{ total: number, data: ProfileEntity[] }>
     findOneBySlug(slug: string): Promise<{ data: ProfileEntity | null, comment: CommentRemasEntity[], likes: string[] }>
     update(data: UpdateProfileRequest, user: IUser): Promise<{ success: true }>
+    updateIsActiveTrue(user_uuid: string, is_active: boolean): Promise<{ success: true }>
 }

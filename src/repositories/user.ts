@@ -9,7 +9,6 @@ import UserModel from '../models/user';
 @injectable()
 class UserRepository implements IUserRepository {
     async create(data: UserEntity): Promise<UserEntity> {
-        console.log(data, 'ini data')
         const result = await UserModel.create({
             uuid: data.uuid,
             name: data.name,
@@ -73,8 +72,14 @@ class UserRepository implements IUserRepository {
         return { success: true }
     }
 
+    async updateIsActiveTrue(user_uuid: string, is_active: boolean): Promise<{ success: true }> {
 
+        const response = await UserModel.updateOne({ uuid: user_uuid }, {
+            is_active: is_active
+        })
 
+        return { success: true }
+    }
 }
 
 export default UserRepository

@@ -64,7 +64,6 @@ class CommentRemasRepository implements ICommentRemasRepository {
     }
 
     async find(post_uuid: string): Promise<{ data: CommentRemasEntity[] }> {
-        console.log(post_uuid, 'ini psot')
         return CommentRemasModel.find({ remas_uuid: post_uuid })
             .then(result => {
                 return {

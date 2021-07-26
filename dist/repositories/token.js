@@ -14,7 +14,6 @@ const token_1 = __importDefault(require("../entities/token"));
 const token_2 = __importDefault(require("../models/token"));
 let TokenRepository = class TokenRepository {
     async create(data) {
-        console.log(data, 'ini data');
         const result = await token_2.default.create({
             uuid: data.uuid,
             token: data.token,
@@ -50,7 +49,7 @@ let TokenRepository = class TokenRepository {
     }
     async update(data, user_uuid) {
         const result = await token_2.default.updateOne({ user_uuid: user_uuid }, {
-            data
+            revoked: data.revoked
         });
         return data;
     }
@@ -62,7 +61,6 @@ let TokenRepository = class TokenRepository {
         return result ? new token_1.default(result) : null;
     }
     async chainUpdateFromProfile(name, uuid) {
-        console.log(name, uuid);
         const response = await token_2.default.updateOne({ uuid: uuid }, {
             name: name
         });

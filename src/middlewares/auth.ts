@@ -51,7 +51,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         next();
 
     } catch (err) {
-        return HttpErrorHandler(err, req, res)
+        return res.status(500).json({
+            message: "something error"
+        })
     }
 }
 

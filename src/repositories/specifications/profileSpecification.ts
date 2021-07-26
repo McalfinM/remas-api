@@ -52,7 +52,7 @@ class GetProfileSpecification implements ISpecification {
         }
         specifications.deleted_at = null;
         specifications.is_active = true
-        specifications.roles = ['member', 'remaja_masjid']
+        specifications.roles = ['member', 'remaja_masjid'] && ['member', 'remaja_masjid', 'admin']
 
         return specifications;
     }

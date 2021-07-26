@@ -58,7 +58,6 @@ let CommentRemasRepository = class CommentRemasRepository {
         return { success: true };
     }
     async find(post_uuid) {
-        console.log(post_uuid, 'ini psot');
         return commentRemas_2.default.find({ remas_uuid: post_uuid })
             .then(result => {
             return {

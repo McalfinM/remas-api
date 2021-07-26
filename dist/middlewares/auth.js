@@ -47,7 +47,9 @@ const authenticate = async (req, res, next) => {
         next();
     }
     catch (err) {
-        return errors_1.HttpErrorHandler(err, req, res);
+        return res.status(500).json({
+            message: "something error"
+        });
     }
 };
 exports.authenticate = authenticate;

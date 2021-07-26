@@ -21,6 +21,8 @@ import CommentRemasEntity from "../entities/commentRemas";
 import { IUserService } from "./interfaces/user";
 import { IUserRepository } from "../repositories/interfaces/user";
 import { IRequestRemasService } from "./interfaces/requestRemas";
+import { IRegistrationMemberRemasService } from "./interfaces/registrationMemberRemas";
+import { IRegistrationMemberRemasRepository } from "../repositories/interfaces/registrationMemberRemas";
 
 @injectable()
 class ProfileService implements IProfileService {
@@ -31,10 +33,10 @@ class ProfileService implements IProfileService {
         @inject(TYPES.PostRepository) private postService: IPostRepository,
         @inject(TYPES.RemasLikeService) private remasService: IRemasLikeService,
         @inject(TYPES.CommentRemasService) private commentRemasService: ICommentRemasService,
+        @inject(TYPES.RegistrationMemberRemasRepository) private registerMemberRemas: IRegistrationMemberRemasRepository,
         @inject(TYPES.CommentService) private commentService: ICommentService,
         @inject(TYPES.UserRepository) private userService: IUserRepository,
         @inject(TYPES.RequestRemasService) private requestRemasService: IRequestRemasService,
-
         @inject(TYPES.ProducerDispatcher) private dispatcher: EventDispatcher
     ) { }
 
@@ -63,13 +65,13 @@ class ProfileService implements IProfileService {
     }
 
     async update(data: UpdateProfileRequest, user: IUser): Promise<{ success: true }> {
-        console.log(user)
         const searchProfile = await this.profileReopsitory.findOne(user.uuid)
         const postService = await this.postService.findPostWithAuth(user)
         const commentRemas = await this.commentRemasService.findOne(user.uuid)
         const commentService = await this.commentService.findOne(user.uuid)
         const userService = await this.userService.findOneByUuid(user.uuid)
         const findrequestRemas = await this.requestRemasService.findWithUserUuid(user)
+        const findRegistrationMember = await this.registerMemberRemas.findOneUserUuid(user.uuid)
 
         if (!searchProfile) throw new ErrorNotFound('Data not found', '@Service Update profile')
         let slugi = ''
@@ -102,8 +104,8 @@ class ProfileService implements IProfileService {
             uuid: searchProfile.uuid ?? '',
             deleted_at: null
         })
-        if (postService.data.length > 1) {
-            if (postService.data[0].created_by.name !== data.nickname || postService.data[0].image !== data.image) {
+        if (postService.data.length > 0) {
+            if (postService.data[0].created_by.name !== data.nickname || postService.data[0].created_by.image !== data.image) {
                 await this.postService.chainUpdateFromProfile(profileEntity)
             }
 
@@ -115,7 +117,6 @@ class ProfileService implements IProfileService {
 
         }
         if (commentService) {
-            console.log(commentService, 'in coment')
             if (commentService.created_by.name !== data.nickname || commentService.created_by.image !== data.image) {
                 await this.commentService.chainUpdateFromProfile(profileEntity)
             }
@@ -124,7 +125,6 @@ class ProfileService implements IProfileService {
         if (userService) {
 
             if (userService.name !== data.nickname) {
-                console.log('masuk')
                 await this.userService.chainUpdateFromProfile(data.nickname ?? '', user.uuid)
             }
         }
@@ -132,6 +132,12 @@ class ProfileService implements IProfileService {
         if (findrequestRemas) {
             if (findrequestRemas.created_by.name !== data.nickname || findrequestRemas.created_by.image !== data.image) {
                 await this.requestRemasService.chainUpdateFromProfile(profileEntity)
+            }
+        }
+
+        if (findRegistrationMember) {
+            if (findRegistrationMember.created_by?.name !== data.nickname || findRegistrationMember.created_by.image !== data.image) {
+                await this.registerMemberRemas.chainUpdateFromProfile(profileEntity)
             }
         }
 
@@ -165,6 +171,11 @@ class ProfileService implements IProfileService {
         return await this.profileReopsitory.index(
             new GetProfileSpecification(data)
         );
+    }
+
+    async updateIsActiveTrue(user_uuid: string, is_active: boolean): Promise<{ success: true }> {
+        await this.profileReopsitory.updateIsActiveTrue(user_uuid, is_active)
+        return { success: true }
     }
 
 }

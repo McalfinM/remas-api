@@ -5,11 +5,11 @@ import specificationInterface from "./specifications/specificationInterface";
 import { IRegistrationMemberRemasRepository } from "./interfaces/registrationMemberRemas";
 import RegistrationMemberRemasModel from '../models/registrationMemberRemas'
 import RegistrationMemberRemasEntity from "../entities/registrationMemberRemas";
+import ProfileEntity from "../entities/profile";
 
 @injectable()
 class RegistrationMemberRemasRepository implements IRegistrationMemberRemasRepository {
     async create(data: RegistrationMemberRemasEntity): Promise<RegistrationMemberRemasEntity> {
-        console.log(data, 'ini repo')
         const result = await RegistrationMemberRemasModel.create({
             uuid: data.uuid,
             user_uuid: data.user_uuid,
@@ -19,6 +19,7 @@ class RegistrationMemberRemasRepository implements IRegistrationMemberRemasRepos
             handphone: data.handphone,
             image: data.image,
             created_at: data.created_at,
+            description: data.description,
             updated_at: data.updated_at,
             created_by: data.created_by ?? null,
             email: data.email
@@ -36,7 +37,26 @@ class RegistrationMemberRemasRepository implements IRegistrationMemberRemasRepos
 
         return result ? new RegistrationMemberRemasEntity(result) : null
     }
+    async findOneUserUuid(uuid: string): Promise<RegistrationMemberRemasEntity | null> {
 
+        const result = await RegistrationMemberRemasModel.findOne({
+            "created_by.uuid": uuid,
+        })
+
+        return result ? new RegistrationMemberRemasEntity(result) : null
+    }
+    async chainUpdateFromProfile(data: ProfileEntity): Promise<{ success: true }> {
+        await RegistrationMemberRemasModel.updateMany({ "created_by.uuid": data.user_uuid }, {
+            created_by: {
+                name: data.main_information?.nickname ?? '',
+                uuid: data.user_uuid ?? "",
+                image: data.main_information?.image,
+                slug: data.slug
+            }
+        })
+
+        return { success: true }
+    }
     async update(data: RegistrationMemberRemasEntity): Promise<RegistrationMemberRemasEntity> {
         const result = await RegistrationMemberRemasModel.updateOne({
             uuid: data.uuid, user_uuid: data.user_uuid,

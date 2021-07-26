@@ -53,7 +53,7 @@ class UserService implements IUserService {
             is_active: false,
             main_information: {
                 nickname: userEntity.name ?? '',
-                image: 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+                image: 'https://res.cloudinary.com/dcyohew0h/image/upload/v1626325005/posts/roxlkp46kp0sk9oqb3jg.png',
             },
             idul_adha: null,
             ramadhan: null,

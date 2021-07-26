@@ -78,6 +78,18 @@ class RequestRemasEntity extends baseEntity_1.default {
     set status(status) {
         this._status = status;
     }
+    get created_at() {
+        return this._created_at;
+    }
+    set created_at(created_at) {
+        this._created_at = created_at;
+    }
+    get updated_at() {
+        return this._updated_at;
+    }
+    set updated_at(updated_at) {
+        this._updated_at = updated_at;
+    }
     get deleted_at() {
         return this._deleted_at;
     }

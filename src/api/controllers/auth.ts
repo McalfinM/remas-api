@@ -19,7 +19,6 @@ class AuthController {
         try {
             const { email, password } = req.body
             const data = await this.userService.checkEmail(email)
-            console.log('ada yang hit', data)
             if (data?.is_active == false) {
                 return res.status(400).json({
                     message: 'Please active your account'

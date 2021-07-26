@@ -11,4 +11,5 @@ export interface IProfileRepository {
     findOneBySlug(slug: string): Promise<ProfileEntity | null>
     update(data: ProfileEntity): Promise<ProfileEntity>
     index(specification: specificationInterface): Promise<{ total: number, data: ProfileEntity[] }>
+    updateIsActiveTrue(user_uuid: string, is_active: boolean): Promise<{ success: true }>
 }

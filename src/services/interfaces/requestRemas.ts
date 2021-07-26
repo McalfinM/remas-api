@@ -9,7 +9,7 @@ export interface IRequestRemasService {
     delete(uuid: string, user: IUser): Promise<{ success: true }>
     create(data: CreateRequestRemas, user: IUser): Promise<{ success: true }>
     findOne(uuid: string): Promise<RequestRemasEntity | null>
-    find(uuid: string): Promise<{ data: RequestRemasEntity[] }>
+    find(user: IUser): Promise<{ data: RequestRemasEntity[] }>
     findWithUserUuid(user: IUser): Promise<RequestRemasEntity | null>
     chainUpdateFromProfile(user: ProfileEntity): Promise<{ success: true }>
 }
