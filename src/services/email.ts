@@ -30,7 +30,7 @@ class EmailService implements IEmailService {
             from: 'ir.arrahmah@gmail.com',
             to: email,
             subject: 'Verification Account Remaja Masjid',
-            html: '<p>Selamat Datang di Remaja Masjid Silahkan Klik Link berikut untuk konfirmasi akun anda</p>' + `<a href='http://localhost:3000/verification/${token}/account'>Link Verifikasi</a>`
+            html: '<p>Selamat Datang di Remaja Masjid Silahkan Klik Link berikut untuk konfirmasi akun anda</p>' + `<a href='https://muezaa.vercel.app/verification/${token}/account'>Link Verifikasi</a>`
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
