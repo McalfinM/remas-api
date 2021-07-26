@@ -95,7 +95,6 @@ let EventService = class EventService {
         return { success: true };
     }
     async update(uuid, data, user) {
-        console.log(data, 'ini image');
         const searchPost = await this.eventRepository.findPostByUuid(uuid, user);
         console.log(searchPost);
         if (!searchPost)
@@ -120,7 +119,7 @@ let EventService = class EventService {
             created_by: {
                 uuid: user.uuid,
                 name: user.name,
-                image: data.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+                image: searchPost.created_by.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
                 slug: data.slug ?? ''
             },
             time: moment_1.default(data.time).format('H:mm'),

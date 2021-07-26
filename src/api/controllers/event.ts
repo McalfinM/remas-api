@@ -45,7 +45,7 @@ class EventController implements IEventController {
         const { params: { uuid } } = req
         return this.eventService.findOne(uuid)
             .then((result) => {
-                return HttpResponse.success(req, res, result.data?.toDetailData());
+                return HttpResponse.success(req, res, result);
             })
             .catch((err) => HttpErrorHandler(err, req, res));
     }

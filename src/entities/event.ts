@@ -172,6 +172,7 @@ class EventEntity extends BaseEntity {
             created_by: this.created_by,
             image: this.image,
             time: this.time,
+            schedule: this.schedule,
             place: this.place,
             slug: this.slug,
             cloudinary_id: this.cloudinary_id,

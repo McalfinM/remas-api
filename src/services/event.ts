@@ -100,7 +100,6 @@ class EventService implements IEventService {
     }
 
     async update(uuid: string, data: CreateEventRequest, user: IUser): Promise<{ success: true }> {
-        console.log(data, 'ini image')
         const searchPost = await this.eventRepository.findPostByUuid(uuid, user)
         console.log(searchPost)
         if (!searchPost) throw new ErrorNotFound('Data not found', '@Service update post')
@@ -124,7 +123,7 @@ class EventService implements IEventService {
             created_by: {
                 uuid: user.uuid,
                 name: user.name,
-                image: data.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
+                image: searchPost.created_by.image ?? 'https://res.cloudinary.com/werich1/image/upload/v1624073825/waugxiymo5l9u3jcesq4.png',
                 slug: data.slug ?? ''
             },
             time: moment(data.time).format('H:mm'),
